@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29806.167
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HHUpdateApp", "HHUpdateApp\HHUpdateApp.csproj", "{D82CE51A-B7AD-44E2-8AF3-E778FC7120B7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HHUpdate.Test", "HHUpdate.Test\HHUpdate.Test.csproj", "{668BEA6A-9C5A-4633-A927-B1EFF5C32BF6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D82CE51A-B7AD-44E2-8AF3-E778FC7120B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D82CE51A-B7AD-44E2-8AF3-E778FC7120B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D82CE51A-B7AD-44E2-8AF3-E778FC7120B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D82CE51A-B7AD-44E2-8AF3-E778FC7120B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{668BEA6A-9C5A-4633-A927-B1EFF5C32BF6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{668BEA6A-9C5A-4633-A927-B1EFF5C32BF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{668BEA6A-9C5A-4633-A927-B1EFF5C32BF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{668BEA6A-9C5A-4633-A927-B1EFF5C32BF6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8D09EF20-B03A-41CF-83DE-408CBF746969}
+	EndGlobalSection
+EndGlobal
