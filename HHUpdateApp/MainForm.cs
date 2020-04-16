@@ -1,38 +1,66 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
+﻿using HHUpdateApp.Properties;
+using Newtonsoft.Json;
+using System;
 using System.Drawing;
-using System.IO;
-using System.Linq;
 using System.Net;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Windows.Forms;
 
 namespace HHUpdateApp
 {
     public partial class MainForm : Form
     {
-        UpdateWork updateWork;
-        public MainForm(UpdateWork _updateWork)
+        /// <summary>
+        /// 需要更新的业务应用程序,稍后如果需要更新,根据这个名字把相应进程关闭
+        /// </summary>
+        public string launchAppName;
+
+        /// <summary>
+        /// 下载服务器上的版本信息
+        /// </summary>
+        public RemoteVersionInfo verInfo;
+
+        public MainForm(string _launchAppName)
         {
             InitializeComponent();
-            updateWork = _updateWork;
-            var res = _updateWork.UpdateVerList[_updateWork.UpdateVerList.Count - 1].VersionDesc;
-
-            var temp = WebRequest.Create(res);
-            var stream = temp.GetResponse().GetResponseStream();
-            using (StreamReader reader = new StreamReader(stream, System.Text.Encoding.Default))
-            {
-                string text = reader.ReadToEnd();
-                this.lblContent.Text = text;
-            }
-            //foreach (var item in _updateWork.UpdateVerList[_updateWork.UpdateVerList.Count - 1].VersionDesc.Split('$'))
-            //{
-            //    this.lblContent.Text = this.lblContent.Text + item + Environment.NewLine;
-            //}
+            launchAppName = _launchAppName;
         }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            //界面初始化
+            btnIgnore.Visible = false;
+            btnUpdateNow.Visible = false;
+            btnUpdateLater.Visible = false;
+            btnExit.Visible = true;
+
+            //下载服务器上版本更新信息
+            verInfo = DownloadUpdateInfo(Settings.Default.ServerUpdateUrl);
+
+            if (verInfo != null)
+            {
+                //比较版本号
+                string currentAppVer = Application.ProductVersion;
+                if (VersionCompare(currentAppVer, verInfo.ReleaseVersion) >= 0)
+                {
+                    lblContent.Text = string.Format("当前版本已经是最新版本");
+                    this.lblContent.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+                }
+                else
+                {
+                    this.lblContent.Text = verInfo.VersionDesc;
+                    btnIgnore.Visible = true;
+                    btnUpdateNow.Visible = true;
+                    btnUpdateLater.Visible = true;
+                    btnExit.Visible = false;
+                }
+
+            }
+            else
+            {
+            }
+        }
+
         #region 让窗体变成可移动
         [DllImport("user32.dll")]
         public static extern bool ReleaseCapture();
@@ -66,7 +94,6 @@ namespace HHUpdateApp
 
         #endregion
 
-
         /// <summary>
         /// 如果以后更新,则将更新程序关闭
         /// </summary>
@@ -76,20 +103,107 @@ namespace HHUpdateApp
         {
             Application.Exit();
         }
-
+        /// <summary>
+        /// 立即更新
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnUpdateNow_Click(object sender, EventArgs e)
         {
             this.Visible = false;//隐藏当前窗口
-            UpdateForm updateForm = new UpdateForm(updateWork);
+
+            UpdateWork work = new UpdateWork()
+            {
+                ProgramName = launchAppName,
+                RemoteVerInfo = verInfo
+            };
+            UpdateForm updateForm = new UpdateForm(work);
             if (updateForm.ShowDialog() == DialogResult.OK)
             {
                 Application.Exit();
             }
         }
-
+        /// <summary>
+        /// 忽略本次版本更新
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnIgnore_Click(object sender, EventArgs e)
         {
-            updateWork.IgnoreThisVersion();
+            //updateWork.IgnoreThisVersion();
+            Application.Exit();
+        }
+
+        private RemoteVersionInfo DownloadUpdateInfo(string serverUrl)
+        {
+            string updateJson = "";
+            using (WebClient updateClt = new WebClient())
+            {
+
+                try
+                {
+                    byte[] bJson = updateClt.DownloadData(serverUrl);
+                    updateJson = System.Text.Encoding.UTF8.GetString(bJson);
+                }
+                catch (Exception ex)
+                {
+                    //Program.AppLog.WarnFormat("升级信息从 {0} 下载失败：{1}", updateInfoUrl, ex.Message);
+                    lblContent.Text = string.Format("升级信息从 {0} 下载失败：{1}", serverUrl, ex.Message);
+                    return null;
+                }
+                try
+                {
+                    RemoteVersionInfo info = new RemoteVersionInfo();
+                    info = JsonConvert.DeserializeObject<RemoteVersionInfo>(updateJson);
+                    return info;
+                }
+                catch (Exception ex)
+                {
+                    //Program.AppLog.ErrorFormat("升级 json 文件错误：{0}\r\n{0}", ex.Message, updateJson);
+                    lblContent.Text = string.Format("升级 json 文件错误：{0}\r\n{0}", ex.Message, updateJson);
+                    return null;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 比较两个版本号的大小。
+        /// </summary>
+        /// <param name="ver1">版本 1。</param>
+        /// <param name="ver2">版本 2。</param>
+        /// <returns>大于 0，则 ver1 大；小于 0，则 ver2 大；0，则相等。</returns>
+        /// <remarks>通过将版本号中的数字点拆分为字符串数组进行比较，比较每个字符串的大小，如果字符串可以转换为数字，则使用数字比较。
+        /// </remarks>
+        public static int VersionCompare(string ver1, string ver2)
+        {
+            string[] item1 = ver1.Split('.');
+            string[] item2 = ver2.Split('.');
+            int len = item1.Length > item2.Length ? item1.Length : item2.Length;
+            int i_item1, i_item2, i = 0;
+            int cmpValue = 0;
+            while (i < len && cmpValue == 0)
+            {
+                i_item1 = 0; i_item2 = 0;
+                if (int.TryParse(item1[i], out i_item1) && int.TryParse(item2[i], out i_item2))
+                {
+                    cmpValue = i_item1 - i_item2;
+                }
+                else
+                {
+                    cmpValue = string.Compare(item1[i], item2[i]);
+                }
+                i++;
+            }
+            // 两个版本长度不一致，但是前一部分相同的，以长度长的为大。
+            if (cmpValue == 0 && item1.Length != item2.Length)
+            {
+                cmpValue = item1.Length - item2.Length;
+            }
+            return cmpValue;
+        }
+
+        private void btnExit_Click(object sender, EventArgs e)
+        {
             Application.Exit();
         }
     }

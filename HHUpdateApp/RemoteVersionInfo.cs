@@ -4,16 +4,15 @@ using System.Text;
 
 namespace HHUpdateApp
 {
-    public class RemoteInfo
+    /// <summary>
+    /// 服务器上版本更新的json文件 实体
+    /// </summary>
+    public class RemoteVersionInfo
     {
         /// <summary>
         /// 更新后启动的应用程序名
         /// </summary>
         public String ApplicationStart { get; set; }
-        /// <summary>
-        /// 最小版本号
-        /// </summary>
-        public String MinVersion { get; set; }
         /// <summary>
         /// 发布时间
         /// </summary>
@@ -31,8 +30,12 @@ namespace HHUpdateApp
         /// </summary>
         public String UpdateMode { get; set; }
         /// <summary>
-        /// 更新说明文件的链接地址信息
+        /// 更新说明
         /// </summary>
         public String VersionDesc { get; set; }
+        /// <summary>
+        /// 忽略文件
+        /// </summary>
+        public String IgnoreFile { get; set; }
     }
 }

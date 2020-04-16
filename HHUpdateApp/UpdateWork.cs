@@ -12,31 +12,52 @@ using System.Xml;
 using Ionic.Zip;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
+using Newtonsoft.Json;
+using HHUpdateApp.Properties;
 
 namespace HHUpdateApp
 {
     public class UpdateWork
     {
+        /// <summary>
+        /// 更新界面进度条委托
+        /// </summary>
+        /// <param name="data"></param>
         public delegate void UpdateProgess(double data);
         public UpdateProgess OnUpdateProgess;
-        string mainName;
-        //临时目录（WIN7以及以上在C盘只有对于temp目录有操作权限）
+
+        /// <summary>
+        /// 临时目录（WIN7以及以上在C盘只有对于temp目录有操作权限）
+        /// </summary>
         string tempPath = Path.Combine(Environment.GetEnvironmentVariable("TEMP"), @"HHUpdateApp\temp\");
+        /// <summary>
+        /// 备份目录
+        /// </summary>
         string bakPath = Path.Combine(Environment.GetEnvironmentVariable("TEMP"), @"HHUpdateApp\bak\");
 
-        LocalInfo localInfo;
-        public List<RemoteInfo> UpdateVerList { get; set; }
-        public string programName { get; set; }
-        public string subKey { get; set; }
+
+        /// <summary>
+        /// 此更新程序
+        /// </summary>
+        public string mainName;
+
+        /// <summary>
+        /// 远程服务器上版本更新信息
+        /// </summary>
+        public RemoteVersionInfo RemoteVerInfo { get; set; }
+        /// <summary>
+        /// 需要更新的业务应用程序
+        /// </summary>
+        public string ProgramName { get; set; }
+
         /// <summary>
         /// 初始化配置目录信息
         /// </summary>
-        public UpdateWork(string _programName, string localAddress, string isClickUpdate)
+        public UpdateWork()
         {
-            localInfo = new LocalInfo(localAddress);
             Process cur = Process.GetCurrentProcess();
             mainName = Path.GetFileName(cur.MainModule.FileName);
-            programName = _programName;
+
             //创建备份目录信息
             DirectoryInfo bakinfo = new DirectoryInfo(bakPath);
             if (bakinfo.Exists == false)
@@ -49,69 +70,33 @@ namespace HHUpdateApp
             {
                 tempinfo.Create();
             }
-            localInfo.LoadXml();
-            UpdateVerList = GetServer(localInfo.ServerUpdateUrl);
-            CheckVer(localInfo.LocalVersion, localInfo.LocalIgnoreVersion, isClickUpdate);
         }
 
-        public bool Do()
+        public bool DoUpdateJob()
         {
             KillProcessExist();
             Thread.Sleep(400);
-            //更新之前先备份
+            //1，更新之前先备份
             Bak();
             Thread.Sleep(400);
-            //备份结束开始下载东西
+            //2，备份结束开始下载东西
             DownLoad();//下载更新包文件信息
             Thread.Sleep(400);
-            //3、开始更新
+            //3，开始更新
             Update();
             Thread.Sleep(400);
-
+            //4，更新结束后，启动业务程序
             Start();
             Thread.Sleep(400);
             return true;
         }
 
-        public void IgnoreThisVersion()
-        {
-            var item = UpdateVerList[UpdateVerList.Count - 1];
-            localInfo.LocalIgnoreVersion = item.ReleaseVersion;
-            localInfo.SaveXml();
-        }
-
-        /// <summary>
-        /// 获取更新的服务器端的数据信息
-        /// </summary>
-        /// <param name="url">自动更新的URL信息</param>
-        /// <returns></returns>
-        private static List<RemoteInfo> GetServer(string url)
-        {
-            ServicePointManager.ServerCertificateValidationCallback += RemoteCertificateValidate;
-            List<RemoteInfo> list = new List<RemoteInfo>();
-            XmlReader xml = XmlReader.Create(url);
-            XmlDocument xdoc = new XmlDocument();
-            xdoc.Load(url);
-            var root = xdoc.DocumentElement;
-            var listNodes = root.SelectNodes("/ServerUpdate/item");
-            foreach (XmlNode item in listNodes)
-            {
-                RemoteInfo remote = new RemoteInfo();
-                foreach (XmlNode pItem in item.ChildNodes)
-                {
-                    remote.GetType().GetProperty(pItem.Name).SetValue(remote, pItem.InnerText, null);
-                }
-                list.Add(remote);
-            }
-            return list;
-        }
-        private static bool RemoteCertificateValidate(
-              object sender, X509Certificate cert,
-               X509Chain chain, SslPolicyErrors error)
-        {
-            System.Console.WriteLine("Warning, trust any certificate");
-            return true;
-        }
+        //public void IgnoreThisVersion()
+        //{
+        //    var item = UpdateVerList[UpdateVerList.Count - 1];
+        //    localInfo.LocalIgnoreVersion = item.ReleaseVersion;
+        //    localInfo.SaveXml();
+        //}
 
         /// <summary>
         /// 下载方法
@@ -123,26 +108,21 @@ namespace HHUpdateApp
             //构造文件完全限定名,准备将网络流下载为本地文件
             using (WebClient web = new WebClient())
             {
-                foreach (var item in UpdateVerList)
+                try
                 {
-                    try
-                    {
-                        LogTool.AddLog("更新程序：下载更新包文件" + item.ReleaseVersion);
-                        web.DownloadFile(item.ReleaseUrl, tempPath + item.ReleaseVersion + ".zip");
-                        OnUpdateProgess?.Invoke(60 / UpdateVerList.Count);
-                    }
-                    catch (Exception ex)
-                    {
-                        LogTool.AddLog("更新程序：更新包文件" + item.ReleaseVersion + "下载失败,本次停止更新，异常信息：" + ex.Message);
-                        throw ex;
-                    }
+                    LogTool.AddLog("更新程序：下载更新包文件" + RemoteVerInfo.ReleaseVersion);
+                    web.DownloadFile(RemoteVerInfo.ReleaseUrl, tempPath + RemoteVerInfo.ReleaseVersion + ".zip");
+                    OnUpdateProgess?.Invoke(50);
                 }
+                catch (Exception ex)
+                {
+                    LogTool.AddLog("更新程序：更新包文件" + RemoteVerInfo.ReleaseVersion + "下载失败,本次停止更新，异常信息：" + ex.Message);
+                    throw ex;
+                }
+                
                 return this;
             }
         }
-
-
-
 
         /// <summary>
         /// 备份当前的程序目录信息
@@ -151,9 +131,7 @@ namespace HHUpdateApp
         {
             try
             {
-
                 LogTool.AddLog("更新程序：准备执行备份操作");
-
                 DirectoryInfo di = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
                 foreach (var item in di.GetFiles())
                 {
@@ -182,41 +160,34 @@ namespace HHUpdateApp
 
         private UpdateWork Update()
         {
-            foreach (var item in UpdateVerList)
+            try
             {
-                try
+                //如果是覆盖安装的话，先删除原先的所有程序
+                //if (RemoteVerInfo.UpdateMode == "Cover")
+                //{
+                //    DelLocal();
+                //}
+                string path = tempPath + RemoteVerInfo.ReleaseVersion + ".zip";
+                using (ZipFile zip = new ZipFile(path))
                 {
-                    //如果是覆盖安装的话，先删除原先的所有程序
-                    if (item.UpdateMode == "Cover")
-                    {
-                        DelLocal();
-                    }
-                    string path = tempPath + item.ReleaseVersion + ".zip";
-                    using (ZipFile zip = new ZipFile(path))
-                    {
-                        LogTool.AddLog("更新程序：解压" + item.ReleaseVersion + ".zip");
-                        zip.ExtractAll(AppDomain.CurrentDomain.BaseDirectory, ExtractExistingFileAction.OverwriteSilently);
-                        LogTool.AddLog("更新程序：" + item.ReleaseVersion + ".zip" + "解压完成");
-                        ExecuteINI();//执行注册表等更新以及删除文件
-                    }
-                    localInfo.LastUdpate = item.ReleaseDate;
-                    localInfo.LocalVersion = item.ReleaseVersion;
-                    localInfo.SaveXml();
+                    LogTool.AddLog("更新程序：解压" + RemoteVerInfo.ReleaseVersion + ".zip");
+                    zip.ExtractAll(AppDomain.CurrentDomain.BaseDirectory, ExtractExistingFileAction.OverwriteSilently);
+                    LogTool.AddLog("更新程序：" + RemoteVerInfo.ReleaseVersion + ".zip" + "解压完成");
+                    ExecuteINI();//执行注册表等更新以及删除文件
                 }
-                catch (Exception ex)
-                {
-                    LogTool.AddLog("更新程序出现异常：异常信息：" + ex.Message);
-                    LogTool.AddLog("更新程序：更新失败，进行回滚操作");
-                    Restore();
-                    break;
-                }
-                finally
-                {
-                    //删除下载的临时文件
-                    LogTool.AddLog("更新程序：删除临时文件" + item.ReleaseVersion);
-                    DelTempFile(item.ReleaseVersion + ".zip");//删除更新包
-                    LogTool.AddLog("更新程序：临时文件删除完成" + item.ReleaseVersion);
-                }
+            }
+            catch (Exception ex)
+            {
+                LogTool.AddLog("更新程序出现异常：异常信息：" + ex.Message);
+                LogTool.AddLog("更新程序：更新失败，进行回滚操作");
+                Restore();
+            }
+            finally
+            {
+                //删除下载的临时文件
+                LogTool.AddLog("更新程序：删除临时文件" + RemoteVerInfo.ReleaseVersion);
+                DelTempFile(RemoteVerInfo.ReleaseVersion + ".zip");//删除更新包
+                LogTool.AddLog("更新程序：临时文件删除完成" + RemoteVerInfo.ReleaseVersion);
             }
             OnUpdateProgess?.Invoke(98);
             return this;
@@ -224,7 +195,8 @@ namespace HHUpdateApp
 
         private UpdateWork Start()
         {
-            String[] StartInfo = UpdateVerList[UpdateVerList.Count - 1].ApplicationStart.Split(',');
+            //需要在更新后启动的应用程序，多个应用程序用‘#’分割
+            String[] StartInfo = RemoteVerInfo.ApplicationStart.Split('#');
             if (StartInfo.Length > 0)
             {
                 foreach (var item in StartInfo)
@@ -236,8 +208,6 @@ namespace HHUpdateApp
             OnUpdateProgess?.Invoke(100);
             return this;
         }
-
-
 
         /// <summary>
         /// 文件拷贝
@@ -328,68 +298,6 @@ namespace HHUpdateApp
             }
             return this;
         }
-        /// <summary>
-        /// 校验程序版本号
-        /// </summary>
-        /// <param name="LocalVer">当前本地版本信息</param>
-        /// <returns></returns>
-        private UpdateWork CheckVer(string LocalVer, string localIgnoreVer, string isClickUpdate)
-        {
-            string[] Local = LocalVer.Split('.');
-            string[] LocalIgnore = localIgnoreVer.Split('.');
-            List<RemoteInfo> list = new List<RemoteInfo>();
-            List<RemoteInfo> listReal = new List<RemoteInfo>();
-            foreach (var item in UpdateVerList)
-            {
-                string[] Remote = item.ReleaseVersion.Split('.');
-                for (int i = 0; i < Local.Length; i++)
-                {
-                    if (int.Parse(Local[i]) < int.Parse(Remote[i]))
-                    {
-                        list.Add(item);
-                        break;
-                    }
-                    else if (int.Parse(Local[i]) == int.Parse(Remote[i]))
-                    {
-                        continue;
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
-            }
-            if (isClickUpdate == "0")
-            {
-                foreach (var item in list)
-                {
-                    string[] Remote = item.ReleaseVersion.Split('.');
-                    for (int i = 0; i < LocalIgnore.Length; i++)
-                    {
-                        if (int.Parse(LocalIgnore[i]) < int.Parse(Remote[i]))
-                        {
-                            listReal.Add(item);
-                            break;
-                        }
-                        else if (int.Parse(LocalIgnore[i]) == int.Parse(Remote[i]))
-                        {
-                            continue;
-                        }
-                        else
-                        {
-                            break;
-                        }
-                    }
-                }
-            }
-            else
-            {
-                listReal = list;
-            }
-            UpdateVerList = listReal;
-            return this;
-        }
-
 
 
         /// <summary>
@@ -462,7 +370,7 @@ namespace HHUpdateApp
         /// <returns></returns>
         public bool CheckProcessExist()
         {
-            return Process.GetProcessesByName(programName).Length > 0 ? true : false;
+            return Process.GetProcessesByName(ProgramName).Length > 0 ? true : false;
         }
 
         /// <summary>
@@ -471,7 +379,7 @@ namespace HHUpdateApp
         /// <param name="programName">程序名称</param>
         public void KillProcessExist()
         {
-            Process[] processes = Process.GetProcessesByName(programName);
+            Process[] processes = Process.GetProcessesByName(ProgramName);
             foreach (Process p in processes)
             {
                 p.Kill();

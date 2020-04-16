@@ -35,7 +35,7 @@ namespace HHUpdateApp
             {
                 try
                 {
-                    work.Do();
+                    work.DoUpdateJob();
                     this.DialogResult = DialogResult.OK;
                 }
                 catch (Exception EX)

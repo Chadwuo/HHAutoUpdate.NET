@@ -1,7 +1,15 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)">
-  <Profiles>
-    <Profile Name="(Default)" />
-  </Profiles>
-  <Settings />
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="HHUpdateApp.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="ServerUpdateUrl" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://localhost:8020/TrafficQueue.Services/version.json</Value>
+    </Setting>
+    <Setting Name="LocalIgnoreVer" Type="System.String" Scope="Application">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="SilentUpdate" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">静默更新 0：否 1：是</Value>
+    </Setting>
+  </Settings>
 </SettingsFile>
