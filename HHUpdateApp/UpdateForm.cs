@@ -40,7 +40,7 @@ namespace HHUpdateApp
                 }
                 catch (Exception EX)
                 {
-                    MessageBox.Show(EX.Message);
+                    //MessageBox.Show(EX.Message);
                 }
             });
         }

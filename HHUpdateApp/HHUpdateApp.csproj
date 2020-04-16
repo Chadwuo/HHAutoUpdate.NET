@@ -62,6 +62,12 @@
     <Compile Include="HHBtn.Designer.cs">
       <DependentUpon>HHBtn.cs</DependentUpon>
     </Compile>
+    <Compile Include="HHMessageBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="HHMessageBox.Designer.cs">
+      <DependentUpon>HHMessageBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="LogTool.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
@@ -124,6 +130,9 @@
     <Compile Include="Zip DLL\ZlibCodec.cs" />
     <Compile Include="Zip DLL\ZlibConstants.cs" />
     <Compile Include="Zip DLL\ZlibStream.cs" />
+    <EmbeddedResource Include="HHMessageBox.resx">
+      <DependentUpon>HHMessageBox.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
