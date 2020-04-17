@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
@@ -13,7 +14,7 @@ namespace HHUpdateApp
         /// <summary>
         /// 程序主入口
         /// </summary>
-        /// <param name="args">[0]程序名称，[1]静默更新 0：否 1：是 </param>
+        /// <param name="args">[0]程序名称</param>
         [STAThread]
         static void Main(string[] args)
         {
@@ -24,13 +25,9 @@ namespace HHUpdateApp
                 try
                 {
                     //拉起更新请求的业务程序，稍后更新时，根据这个值关闭对应的进程
-                    string launchAppName = "";
-                    if (args.Length > 0)
-                    {
-                        launchAppName = args[0];
-                    }
+                    string launchAppName = "HHUpdate.Test";//args[0];
 
-                    //string silentUpdate = args[1];
+
                     /* 当前用户是管理员的时候，直接启动应用程序 
                      * 如果不是管理员，则使用启动对象启动程序，以确保使用管理员身份运行 
                      */
@@ -75,7 +72,7 @@ namespace HHUpdateApp
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message);
+                    HHMessageBox.Show(ex.Message, "错误");
                 }
             }
         }

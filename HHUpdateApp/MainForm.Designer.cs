@@ -33,7 +33,6 @@
             this.btnUpdateNow = new HHUpdateApp.HHBtn();
             this.btnUpdateLater = new HHUpdateApp.HHBtn();
             this.btnIgnore = new HHUpdateApp.HHBtn();
-            this.btnExit = new HHUpdateApp.HHBtn();
             this.SuspendLayout();
             // 
             // LBTitle
@@ -52,11 +51,13 @@
             // 
             this.lblContent.Font = new System.Drawing.Font("微软雅黑", 11F);
             this.lblContent.ForeColor = System.Drawing.Color.DimGray;
-            this.lblContent.Location = new System.Drawing.Point(118, 106);
+            this.lblContent.Location = new System.Drawing.Point(111, 124);
             this.lblContent.Name = "lblContent";
-            this.lblContent.Size = new System.Drawing.Size(358, 159);
+            this.lblContent.Size = new System.Drawing.Size(386, 179);
             this.lblContent.TabIndex = 24;
-            this.lblContent.Text = "当期版本已经是最新版本";
+            this.lblContent.Text = "一个有趣的故事，当我们最初准备重做乐芙兰时已经准备好了这个BUG的修复，但最后并没有实装，因为这个技能被取代了。\r\n1，修复了一个BUG，【被动 - 镜花水月】所" +
+    "召唤的分身在普攻命中前阵亡，那么她所进行的普攻会造成伤害。\r\n2，新增：【恶意魔印】将为目标施加一个印记。\r\n3，乐芙兰重做后的大招理应让她能够选择复制哪个技能" +
+    "来做出更有趣的连招。\r\n";
             this.lblContent.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // btnUpdateNow
@@ -119,26 +120,6 @@
             this.btnIgnore.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.btnIgnore.Click += new System.EventHandler(this.btnIgnore_Click);
             // 
-            // btnExit
-            // 
-            this.btnExit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(173)))), ((int)(((byte)(25)))));
-            this.btnExit.EnterImage = null;
-            this.btnExit.Font = new System.Drawing.Font("微软雅黑", 10F);
-            this.btnExit.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
-            this.btnExit.IsColorChange = true;
-            this.btnExit.IsFontChange = false;
-            this.btnExit.Location = new System.Drawing.Point(232, 277);
-            this.btnExit.MoveColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(173)))), ((int)(((byte)(25)))));
-            this.btnExit.MoveFontColor = System.Drawing.Color.White;
-            this.btnExit.Name = "btnExit";
-            this.btnExit.NormalColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(173)))), ((int)(((byte)(25)))));
-            this.btnExit.NormalFontColor = System.Drawing.Color.White;
-            this.btnExit.Size = new System.Drawing.Size(141, 45);
-            this.btnExit.TabIndex = 28;
-            this.btnExit.Text = "确定";
-            this.btnExit.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -146,7 +127,6 @@
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.ClientSize = new System.Drawing.Size(600, 420);
-            this.Controls.Add(this.btnExit);
             this.Controls.Add(this.btnUpdateNow);
             this.Controls.Add(this.btnUpdateLater);
             this.Controls.Add(this.btnIgnore);
@@ -171,7 +151,6 @@
         private HHBtn btnIgnore;
         private HHBtn btnUpdateLater;
         private HHBtn btnUpdateNow;
-        private HHBtn btnExit;
     }
 }
 

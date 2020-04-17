@@ -20,14 +20,14 @@ namespace HHUpdate.Test
 
         private void button1_Click(object sender, EventArgs e)
         {
-            string path = AppDomain.CurrentDomain.BaseDirectory + "HHUpdateApp.exe";
+            string _updateAppPath = AppDomain.CurrentDomain.BaseDirectory +"HHUpdateApp\\HHUpdateApp.exe";
             
-            if (File.Exists(path))
+            if (File.Exists(_updateAppPath))
             {
                 ProcessStartInfo processStartInfo = new ProcessStartInfo()
                 {
-                    FileName = "HHUpdateApp.exe",
-                    Arguments = "HHUpdate.Test 0"
+                    FileName = _updateAppPath,
+                    Arguments = "HHUpdate.Test "
                 };
                 Process proc = Process.Start(processStartInfo);
                 if (proc != null)
