@@ -12,12 +12,12 @@ namespace HHUpdateApp
         public static void AddLog(String value)
         {
             Debug.WriteLine(value);
-            if (Directory.Exists(Path.Combine(temp, @"log\")) == false)
+            if (Directory.Exists(Path.Combine(temp, @"HHUpdatelog\")) == false)
             {
-                DirectoryInfo directoryInfo = new DirectoryInfo(Path.Combine(temp, @"log\"));
+                DirectoryInfo directoryInfo = new DirectoryInfo(Path.Combine(temp, @"HHUpdatelog\"));
                 directoryInfo.Create();
             }
-            using (StreamWriter sw = File.AppendText(Path.Combine(temp, @"log\update.log")))
+            using (StreamWriter sw = File.AppendText(Path.Combine(temp, @"HHUpdatelog\update.log")))
             {
                 sw.WriteLine(value);
             }

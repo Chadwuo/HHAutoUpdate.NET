@@ -19,13 +19,7 @@ namespace HHUpdateApp
 {
     public class UpdateWork
     {
-        /// <summary>
-        /// 更新界面进度条委托
-        /// </summary>
-        /// <param name="data"></param>
-        public delegate void UpdateProgess(double data);
-        public UpdateProgess OnUpdateProgess;
-
+        #region 字段
         /// <summary>
         /// 临时目录（WIN7以及以上在C盘只有对于temp目录有操作权限）
         /// </summary>
@@ -35,14 +29,20 @@ namespace HHUpdateApp
         /// </summary>
         string bakPath = Path.Combine(Environment.GetEnvironmentVariable("TEMP"), @"HHUpdateApp\bak\");
 
-
         /// <summary>
-        /// 此更新程序
+        /// 此更新程序所在目录
         /// </summary>
-        public string mainName;
+        private string mainDirectoryName;
 
         /// <summary>
-        /// 远程服务器上版本更新信息
+        /// 需要更新的业务应用程序所在目录
+        /// </summary>
+        private string ProgramDirectoryName;
+        #endregion
+
+        #region 属性
+        /// <summary>
+        /// 远程服务器上版本更新参数
         /// </summary>
         public RemoteVersionInfo RemoteVerInfo { get; set; }
         /// <summary>
@@ -50,13 +50,32 @@ namespace HHUpdateApp
         /// </summary>
         public string ProgramName { get; set; }
 
+        #endregion
+
         /// <summary>
         /// 初始化配置目录信息
         /// </summary>
-        public UpdateWork()
+        /// <param name="_programName">需要更新的业务应用程序</param>
+        /// <param name="_remoteVerInfo">远程服务器上版本更新参数</param>
+        public UpdateWork(string _programName, RemoteVersionInfo _remoteVerInfo)
         {
+            ProgramName = _programName;
+            RemoteVerInfo = _remoteVerInfo;
+
             Process cur = Process.GetCurrentProcess();
-            mainName = Path.GetFileName(cur.MainModule.FileName);
+
+            mainDirectoryName = Path.GetFileName(Path.GetDirectoryName(cur.MainModule.FileName));
+
+
+            Process[] processes = Process.GetProcessesByName(ProgramName);
+            if (processes.Length > 0)
+            {
+                ProgramDirectoryName = Path.GetDirectoryName(processes[0].MainModule.FileName);
+            }
+            else
+            {
+                ProgramDirectoryName = AppDomain.CurrentDomain.BaseDirectory;
+            }
 
             //创建备份目录信息
             DirectoryInfo bakinfo = new DirectoryInfo(bakPath);
@@ -72,38 +91,59 @@ namespace HHUpdateApp
             }
         }
 
+        /// <summary>
+        /// 默认构造函数。
+        /// </summary>
+        public UpdateWork()
+        {
+
+        }
+
+        /// <summary>
+        /// 更新工作
+        /// </summary>
+        /// <returns></returns>
         public bool DoUpdateJob()
         {
-            KillProcessExist();
+            //关闭业务程序相关进程
+            if (CheckProcessExist())
+            {
+                KillProcessExist();
+            }
             Thread.Sleep(400);
             //1，更新之前先备份
             Bak();
             Thread.Sleep(400);
-            //2，备份结束开始下载东西
-            DownLoad();//下载更新包文件信息
+            //2，备份结束开始下载更新包
+            DownLoad();
             Thread.Sleep(400);
             //3，开始更新
             Update();
             Thread.Sleep(400);
-            //4，更新结束后，启动业务程序
-            Start();
-            Thread.Sleep(400);
+
             return true;
         }
 
-        //public void IgnoreThisVersion()
-        //{
-        //    var item = UpdateVerList[UpdateVerList.Count - 1];
-        //    localInfo.LocalIgnoreVersion = item.ReleaseVersion;
-        //    localInfo.SaveXml();
-        //}
+        /// <summary>
+        /// 业务应用重启
+        /// </summary>
+        /// <returns></returns>
+        public bool AppStart()
+        {
+            string[] AppStartName = RemoteVerInfo.ApplicationStart.Split('#');
+            foreach (var item in AppStartName)
+            {
+                LogTool.AddLog("更新程序：启动" + item);
+                Process.Start(Path.Combine(ProgramDirectoryName, item));
+            }
+            return true;
+        }
 
         /// <summary>
         /// 下载方法
         /// </summary>
-        private UpdateWork DownLoad()
+        public UpdateWork DownLoad()
         {
-            //比如uri=http://localhost/Rabom/1.rar;iis就需要自己配置了。
             //截取文件名
             //构造文件完全限定名,准备将网络流下载为本地文件
             using (WebClient web = new WebClient())
@@ -112,14 +152,13 @@ namespace HHUpdateApp
                 {
                     LogTool.AddLog("更新程序：下载更新包文件" + RemoteVerInfo.ReleaseVersion);
                     web.DownloadFile(RemoteVerInfo.ReleaseUrl, tempPath + RemoteVerInfo.ReleaseVersion + ".zip");
-                    OnUpdateProgess?.Invoke(50);
                 }
                 catch (Exception ex)
                 {
                     LogTool.AddLog("更新程序：更新包文件" + RemoteVerInfo.ReleaseVersion + "下载失败,本次停止更新，异常信息：" + ex.Message);
                     throw ex;
                 }
-                
+
                 return this;
             }
         }
@@ -127,29 +166,25 @@ namespace HHUpdateApp
         /// <summary>
         /// 备份当前的程序目录信息
         /// </summary>
-        private UpdateWork Bak()
+        public UpdateWork Bak()
         {
             try
             {
                 LogTool.AddLog("更新程序：准备执行备份操作");
-                DirectoryInfo di = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
+                DirectoryInfo di = new DirectoryInfo(ProgramDirectoryName);
                 foreach (var item in di.GetFiles())
                 {
-                    if (item.Name != mainName)//当前文件不需要备份
-                    {
-                        File.Copy(item.FullName, bakPath + item.Name, true);
-                    }
+                    File.Copy(item.FullName, bakPath + item.Name, true);
                 }
-                //文件夹复制
+                //文件夹复制 当前升级程序文件不需要备份
                 foreach (var item in di.GetDirectories())
                 {
-                    if (item.Name != "bak" && item.Name != "temp")
+                    if (item.Name != mainDirectoryName)
                     {
                         CopyDirectory(item.FullName, bakPath);
                     }
                 }
                 LogTool.AddLog("更新程序：备份操作执行完成,开始关闭应用程序");
-                OnUpdateProgess?.Invoke(20);
                 return this;
             }
             catch (Exception EX)
@@ -158,7 +193,7 @@ namespace HHUpdateApp
             }
         }
 
-        private UpdateWork Update()
+        public UpdateWork Update()
         {
             try
             {
@@ -171,7 +206,7 @@ namespace HHUpdateApp
                 using (ZipFile zip = new ZipFile(path))
                 {
                     LogTool.AddLog("更新程序：解压" + RemoteVerInfo.ReleaseVersion + ".zip");
-                    zip.ExtractAll(AppDomain.CurrentDomain.BaseDirectory, ExtractExistingFileAction.OverwriteSilently);
+                    zip.ExtractAll(ProgramDirectoryName, ExtractExistingFileAction.OverwriteSilently);
                     LogTool.AddLog("更新程序：" + RemoteVerInfo.ReleaseVersion + ".zip" + "解压完成");
                     ExecuteINI();//执行注册表等更新以及删除文件
                 }
@@ -189,23 +224,6 @@ namespace HHUpdateApp
                 DelTempFile(RemoteVerInfo.ReleaseVersion + ".zip");//删除更新包
                 LogTool.AddLog("更新程序：临时文件删除完成" + RemoteVerInfo.ReleaseVersion);
             }
-            OnUpdateProgess?.Invoke(98);
-            return this;
-        }
-
-        private UpdateWork Start()
-        {
-            //需要在更新后启动的应用程序，多个应用程序用‘#’分割
-            String[] StartInfo = RemoteVerInfo.ApplicationStart.Split('#');
-            if (StartInfo.Length > 0)
-            {
-                foreach (var item in StartInfo)
-                {
-                    LogTool.AddLog("更新程序：启动" + item);
-                    Process.Start(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, item));
-                }
-            }
-            OnUpdateProgess?.Invoke(100);
             return this;
         }
 
@@ -267,7 +285,7 @@ namespace HHUpdateApp
         private UpdateWork Restore()
         {
             DelLocal();
-            CopyDirectory(bakPath, AppDomain.CurrentDomain.BaseDirectory);
+            CopyDirectory(bakPath, ProgramDirectoryName);
             return this;
         }
         /// <summary>
@@ -275,23 +293,20 @@ namespace HHUpdateApp
         /// </summary>
         private UpdateWork DelLocal()
         {
-            DirectoryInfo di = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
+            DirectoryInfo di = new DirectoryInfo(ProgramDirectoryName);
             foreach (var item in di.GetFiles())
             {
-                if (item.Name != mainName)
+                //判断文件是否是指定忽略的文件
+                if (!RemoteVerInfo.IgnoreFile.Contains(item.Name))
                 {
-                    if (item.Name == "Local.xml")
-                    {
-                    }
-                    else
-                    {
-                        File.Delete(item.FullName);
-                    }
+                    File.Delete(item.FullName);
                 }
+
+
             }
             foreach (var item in di.GetDirectories())
             {
-                if (item.Name != "bak" && item.Name != "temp")
+                if (item.Name != mainDirectoryName)
                 {
                     item.Delete(true);
                 }
@@ -305,7 +320,7 @@ namespace HHUpdateApp
         /// </summary>
         private UpdateWork ExecuteINI()
         {
-            DirectoryInfo TheFolder = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
+            DirectoryInfo TheFolder = new DirectoryInfo(ProgramDirectoryName);
 
             if (File.Exists(Path.Combine(TheFolder.FullName, "config.update")))
             {
@@ -355,9 +370,9 @@ namespace HHUpdateApp
         /// </summary>
         private UpdateWork DelFile(string name)
         {
-            if (File.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, name)))
+            if (File.Exists(Path.Combine(ProgramDirectoryName, name)))
             {
-                FileInfo file = new FileInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, name));
+                FileInfo file = new FileInfo(Path.Combine(ProgramDirectoryName, name));
                 file.Delete();
             }
             return this;

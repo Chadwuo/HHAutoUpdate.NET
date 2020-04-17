@@ -72,9 +72,15 @@ namespace HHUpdateApp
 
         #endregion
 
-        private void lblContent_Click(object sender, EventArgs e)
+        private void btnOk_Click(object sender, EventArgs e)
         {
+            this.DialogResult = DialogResult.OK;
+        }
 
+        private void HHMessageBox_Shown(object sender, EventArgs e)
+        {
+            lblContent.Text = ContentText;
+            LBTitle.Text = TitleText;
         }
     }
 }
