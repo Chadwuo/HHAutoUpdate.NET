@@ -8,8 +8,8 @@
     <Setting Name="LocalIgnoreVer" Type="System.String" Scope="Application">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="SilentUpdate" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">静默更新 0：否 1：是</Value>
+    <Setting Name="SilentUpdate" Type="System.Boolean" Scope="Application">
+      <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>
 </SettingsFile>

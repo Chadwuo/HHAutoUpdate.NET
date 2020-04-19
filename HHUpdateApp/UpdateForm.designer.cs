@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UpdateForm));
             this.updateBar = new System.Windows.Forms.ProgressBar();
             this.LBTitle = new System.Windows.Forms.Label();
             this.lblMsg = new System.Windows.Forms.Label();
@@ -119,9 +120,10 @@
             this.Controls.Add(this.LBTitle);
             this.Controls.Add(this.updateBar);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "UpdateForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "UpdateForm";
+            this.Text = "升级";
             this.Load += new System.EventHandler(this.UpdateForm_Load);
             this.Shown += new System.EventHandler(this.UpdateForm_Shown);
             this.ResumeLayout(false);

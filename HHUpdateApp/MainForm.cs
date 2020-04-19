@@ -1,7 +1,9 @@
 ﻿using HHUpdateApp.Properties;
 using Newtonsoft.Json;
 using System;
+using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Net;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
@@ -14,7 +16,7 @@ namespace HHUpdateApp
         /// 需要更新的业务应用程序,稍后如果需要更新,根据这个名字把相应进程关闭
         /// </summary>
         private string launchAppName;
-        
+
         /// <summary>
         /// 服务器上的版本信息
         /// </summary>
@@ -72,12 +74,35 @@ namespace HHUpdateApp
         {
             this.Hide();//隐藏当前窗口
 
-            UpdateWork work = new UpdateWork(launchAppName, verInfo);
-            UpdateForm updateForm = new UpdateForm(work);
-            if (updateForm.ShowDialog() == DialogResult.OK)
+            //通过业务应用程序名，获取其所在位置
+            Process[] processes = Process.GetProcessesByName(launchAppName);
+           
+            if (processes.Length > 0)
             {
+                //获取 需要更新的业务应用程序所在目录
+                string launchAppDirectoryName = Path.GetDirectoryName(processes[0].MainModule.FileName);
+                UpdateWork work = new UpdateWork(launchAppDirectoryName, verInfo);
+               
+                //关闭业务应用程序关联的进程
+                foreach (Process p in processes)
+                {
+                    p.Kill();
+                    p.Close();
+                }
+
+                UpdateForm updateForm = new UpdateForm(work);
+                if (updateForm.ShowDialog() == DialogResult.OK)
+                {
+                    Application.Exit();
+                }
+            }
+            else
+            {
+                HHMessageBox.Show("应用程序未启动: _" + launchAppName);
                 Application.Exit();
             }
+
+
         }
         /// <summary>
         /// 忽略本次版本更新
@@ -86,7 +111,7 @@ namespace HHUpdateApp
         /// <param name="e"></param>
         private void btnIgnore_Click(object sender, EventArgs e)
         {
-            //忽略这个版本更新还是怎么搞，以后再做
+            //忽略这个版本更新，后面版本在做吧
             Application.Exit();
         }
 
