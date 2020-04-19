@@ -1,5 +1,5 @@
 # HHUpdateApp
-[![GitHub stars](https://img.shields.io/github/stars/micahh28/HHUpdateApp?color=1&label=stars%20%E2%98%85%E2%98%85%E2%98%85%E2%98%85%E2%98%86)](https://github.com/micahh28/HHUpdateApp/stargazers)
+[![GitHub stars](https://img.shields.io/badge/Star-%E2%98%85%E2%98%85%E2%98%85%E2%98%85%E2%98%86-green)](https://github.com/micahh28/HHUpdateApp/stargazers)
 
 HHUpdateApp是.NET程序桌面应用程序。她可以轻松地将自动更新升级功能添加到经典桌面应用程序项目中。
 
