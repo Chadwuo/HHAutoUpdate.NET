@@ -26,7 +26,7 @@ namespace HHUpdateApp
         /// </summary>
         public String ReleaseVersion { get; set; }
         /// <summary>
-        /// 更新方式：Cover表示覆盖更新，Increment表示增量更新
+        /// 更新方式：Cover表示覆盖原文件更新，NewInstall表示删除源文件全新安装
         /// </summary>
         public String UpdateMode { get; set; }
         /// <summary>

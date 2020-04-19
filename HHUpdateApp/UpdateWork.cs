@@ -34,10 +34,6 @@ namespace HHUpdateApp
         /// </summary>
         private string mainDirectoryName;
 
-        /// <summary>
-        /// 需要更新的业务应用程序所在目录
-        /// </summary>
-        private string ProgramDirectoryName;
         #endregion
 
         #region 属性
@@ -45,10 +41,11 @@ namespace HHUpdateApp
         /// 远程服务器上版本更新参数
         /// </summary>
         public RemoteVersionInfo RemoteVerInfo { get; set; }
+
         /// <summary>
-        /// 需要更新的业务应用程序
+        /// 需要更新的业务应用程序所在目录
         /// </summary>
-        public string ProgramName { get; set; }
+        public string ProgramDirectoryName { get; set; }
 
         #endregion
 
@@ -57,25 +54,14 @@ namespace HHUpdateApp
         /// </summary>
         /// <param name="_programName">需要更新的业务应用程序</param>
         /// <param name="_remoteVerInfo">远程服务器上版本更新参数</param>
-        public UpdateWork(string _programName, RemoteVersionInfo _remoteVerInfo)
+        public UpdateWork(string _programDirectoryName, RemoteVersionInfo _remoteVerInfo)
         {
-            ProgramName = _programName;
+            ProgramDirectoryName = _programDirectoryName;
             RemoteVerInfo = _remoteVerInfo;
 
             Process cur = Process.GetCurrentProcess();
 
             mainDirectoryName = Path.GetFileName(Path.GetDirectoryName(cur.MainModule.FileName));
-
-
-            Process[] processes = Process.GetProcessesByName(ProgramName);
-            if (processes.Length > 0)
-            {
-                ProgramDirectoryName = Path.GetDirectoryName(processes[0].MainModule.FileName);
-            }
-            else
-            {
-                ProgramDirectoryName = AppDomain.CurrentDomain.BaseDirectory;
-            }
 
             //创建备份目录信息
             DirectoryInfo bakinfo = new DirectoryInfo(bakPath);
@@ -99,36 +85,11 @@ namespace HHUpdateApp
 
         }
 
-        /// <summary>
-        /// 更新工作
-        /// </summary>
-        /// <returns></returns>
-        public bool DoUpdateJob()
-        {
-            //关闭业务程序相关进程
-            if (CheckProcessExist())
-            {
-                KillProcessExist();
-            }
-            Thread.Sleep(400);
-            //1，更新之前先备份
-            Bak();
-            Thread.Sleep(400);
-            //2，备份结束开始下载更新包
-            DownLoad();
-            Thread.Sleep(400);
-            //3，开始更新
-            Update();
-            Thread.Sleep(400);
-
-            return true;
-        }
 
         /// <summary>
         /// 业务应用重启
         /// </summary>
-        /// <returns></returns>
-        public bool AppStart()
+        public void AppStart()
         {
             string[] AppStartName = RemoteVerInfo.ApplicationStart.Split('#');
             foreach (var item in AppStartName)
@@ -136,22 +97,23 @@ namespace HHUpdateApp
                 LogTool.AddLog("更新程序：启动" + item);
                 Process.Start(Path.Combine(ProgramDirectoryName, item));
             }
-            return true;
+            return;
         }
 
         /// <summary>
         /// 下载方法
         /// </summary>
-        public UpdateWork DownLoad()
+        public void DownLoad()
         {
-            //截取文件名
-            //构造文件完全限定名,准备将网络流下载为本地文件
+            //从服务器上下载升级文件包
             using (WebClient web = new WebClient())
             {
                 try
                 {
                     LogTool.AddLog("更新程序：下载更新包文件" + RemoteVerInfo.ReleaseVersion);
                     web.DownloadFile(RemoteVerInfo.ReleaseUrl, tempPath + RemoteVerInfo.ReleaseVersion + ".zip");
+
+                    return;
                 }
                 catch (Exception ex)
                 {
@@ -159,14 +121,13 @@ namespace HHUpdateApp
                     throw ex;
                 }
 
-                return this;
             }
         }
 
         /// <summary>
         /// 备份当前的程序目录信息
         /// </summary>
-        public UpdateWork Bak()
+        public void Bak()
         {
             try
             {
@@ -176,39 +137,39 @@ namespace HHUpdateApp
                 {
                     File.Copy(item.FullName, bakPath + item.Name, true);
                 }
-                //文件夹复制 当前升级程序文件不需要备份
+                //文件夹复制 
                 foreach (var item in di.GetDirectories())
                 {
+                    //升级程序文件不需要备份
                     if (item.Name != mainDirectoryName)
                     {
                         CopyDirectory(item.FullName, bakPath);
                     }
                 }
                 LogTool.AddLog("更新程序：备份操作执行完成,开始关闭应用程序");
-                return this;
+                return;
             }
-            catch (Exception EX)
+            catch (Exception ex)
             {
-                throw EX;
+                throw ex;
             }
         }
 
-        public UpdateWork Update()
+        public void Update()
         {
             try
             {
-                //如果是覆盖安装的话，先删除原先的所有程序
-                //if (RemoteVerInfo.UpdateMode == "Cover")
-                //{
-                //    DelLocal();
-                //}
+                //如果是全新安装的话，先删除原先的所有程序
+                if (RemoteVerInfo.UpdateMode == "NewInstall")
+                {
+                    DelLocal();
+                }
                 string path = tempPath + RemoteVerInfo.ReleaseVersion + ".zip";
                 using (ZipFile zip = new ZipFile(path))
                 {
                     LogTool.AddLog("更新程序：解压" + RemoteVerInfo.ReleaseVersion + ".zip");
                     zip.ExtractAll(ProgramDirectoryName, ExtractExistingFileAction.OverwriteSilently);
                     LogTool.AddLog("更新程序：" + RemoteVerInfo.ReleaseVersion + ".zip" + "解压完成");
-                    ExecuteINI();//执行注册表等更新以及删除文件
                 }
             }
             catch (Exception ex)
@@ -224,7 +185,6 @@ namespace HHUpdateApp
                 DelTempFile(RemoteVerInfo.ReleaseVersion + ".zip");//删除更新包
                 LogTool.AddLog("更新程序：临时文件删除完成" + RemoteVerInfo.ReleaseVersion);
             }
-            return this;
         }
 
         /// <summary>
@@ -232,7 +192,7 @@ namespace HHUpdateApp
         /// </summary>
         /// <param name="srcdir">源目录</param>
         /// <param name="desdir">目标目录</param>
-        private UpdateWork CopyDirectory(string srcdir, string desdir)
+        private void CopyDirectory(string srcdir, string desdir)
         {
             string folderName = srcdir.Substring(srcdir.LastIndexOf("\\") + 1);
 
@@ -265,181 +225,63 @@ namespace HHUpdateApp
                     File.Copy(file, srcfileName, true);
                 }
             }
-            return this;
+            return;
         }
 
 
         /// <summary>
         /// 删除临时文件
         /// </summary>
-        private UpdateWork DelTempFile(String name)
+        private void DelTempFile(String name)
         {
             FileInfo file = new FileInfo(tempPath + name);
             file.Delete();
-            return this;
+            return;
         }
 
         /// <summary>
         /// 更新失败的情况下，回滚当前更新
         /// </summary>
-        private UpdateWork Restore()
+        private void Restore()
         {
             DelLocal();
             CopyDirectory(bakPath, ProgramDirectoryName);
-            return this;
+            return;
         }
+
         /// <summary>
         /// 删除本地文件夹的文件
         /// </summary>
-        private UpdateWork DelLocal()
+        private void DelLocal()
         {
-            DirectoryInfo di = new DirectoryInfo(ProgramDirectoryName);
-            foreach (var item in di.GetFiles())
+            try
             {
-                //判断文件是否是指定忽略的文件
-                if (!RemoteVerInfo.IgnoreFile.Contains(item.Name))
+                DirectoryInfo di = new DirectoryInfo(ProgramDirectoryName);
+                foreach (var item in di.GetFiles())
                 {
-                    File.Delete(item.FullName);
-                }
-
-
-            }
-            foreach (var item in di.GetDirectories())
-            {
-                if (item.Name != mainDirectoryName)
-                {
-                    item.Delete(true);
-                }
-            }
-            return this;
-        }
-
-
-        /// <summary>
-        /// 更新配置信息
-        /// </summary>
-        private UpdateWork ExecuteINI()
-        {
-            DirectoryInfo TheFolder = new DirectoryInfo(ProgramDirectoryName);
-
-            if (File.Exists(Path.Combine(TheFolder.FullName, "config.update")))
-            {
-                string[] ss = File.ReadAllLines(Path.Combine(TheFolder.FullName, "config.update"));
-                Int32 i = -1;//0[regedit_del] 表示注册表删除‘1[regedit_add]表示注册表新增 2[file_del] 表示删除文件
-                foreach (var s in ss)
-                {
-                    String s1 = s.Trim();
-                    if (s1 == "[regedit_del]")
+                    //判断文件是否是指定忽略的文件
+                    if (!RemoteVerInfo.IgnoreFile.Contains(item.Name))
                     {
-                        i = 0;
+                        File.Delete(item.FullName);
                     }
-                    else if (s1 == "[regedit_add]")
-                    {
-                        i = 1;
-                    }
-                    else if (s1 == "[file_del]")
-                    {
-                        i = 2;
-                    }
-                    else
-                    {
-                        if (i == 0)
-                        {
-                            string[] tempKeys = s1.Split(',');
-                            DelRegistryKey(tempKeys[0], tempKeys[1]);
-                        }
-                        else if (i == 1)
-                        {
-                            string[] values = s1.Split('=');
-                            string[] tempKeys = values[0].Split(',');
-                            SetRegistryKey(tempKeys[0], tempKeys[1], values[1]);
-                        }
-                        else if (i == 2)
-                        {
-                            DelFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, s1));
-                        }
-                    }
-                }
-                DelFile(Path.Combine(TheFolder.FullName, "config.update"));
-            }
-            return this;
-        }
 
-        /// <summary>
-        /// 删除文件
-        /// </summary>
-        private UpdateWork DelFile(string name)
-        {
-            if (File.Exists(Path.Combine(ProgramDirectoryName, name)))
-            {
-                FileInfo file = new FileInfo(Path.Combine(ProgramDirectoryName, name));
-                file.Delete();
-            }
-            return this;
-        }
-
-        /// <summary>
-        /// 校验当前程序是否在运行
-        /// </summary>
-        /// <param name="programName"></param>
-        /// <returns></returns>
-        public bool CheckProcessExist()
-        {
-            return Process.GetProcessesByName(ProgramName).Length > 0 ? true : false;
-        }
-
-        /// <summary>
-        /// 杀掉当前运行的程序进程
-        /// </summary>
-        /// <param name="programName">程序名称</param>
-        public void KillProcessExist()
-        {
-            Process[] processes = Process.GetProcessesByName(ProgramName);
-            foreach (Process p in processes)
-            {
-                p.Kill();
-                p.Close();
-            }
-        }
-
-        #region 暂时没用，如果需要将本地版本放注册表的话 那是有用的
-        /// <summary>
-        /// 设置注册表值
-        /// </summary>
-        /// <param name="subKey"></param>
-        /// <param name="key"></param>
-        /// <param name="value"></param>
-        private void SetRegistryKey(String subKey, String key, String value)
-        {
-            RegistryKey reg;
-            RegistryKey reglocal = Registry.CurrentUser;
-
-            reg = reglocal.OpenSubKey(subKey, true);
-            if (reg == null)
-                reg = reglocal.CreateSubKey(subKey);
-            reg.SetValue(key, value, RegistryValueKind.String);
-            if (reg != null)
-            {
-                reg.Close();
-            }
-        }
-        private void DelRegistryKey(String subKey, String key)
-        {
-            RegistryKey reg;
-            RegistryKey reglocal = Registry.CurrentUser;
-
-            reg = reglocal.OpenSubKey(subKey, true);
-            if (reg != null)
-            {
-                var res = reg.GetValue(key);
-                if (res != null)
-                {
-                    reg.DeleteValue(key);
 
                 }
+                foreach (var item in di.GetDirectories())
+                {
+                    if (item.Name != mainDirectoryName)
+                    {
+                        item.Delete(true);
+                    }
+                }
+                return;
             }
-            reg.Close();
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            
         }
-        #endregion
+
     }
 }

@@ -17,11 +17,15 @@ namespace HHUpdate.Test
         {
             InitializeComponent();
         }
-
+        /// <summary>
+        /// 检查更新按钮
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button1_Click(object sender, EventArgs e)
         {
-            string _updateAppPath = AppDomain.CurrentDomain.BaseDirectory +"HHUpdateApp\\HHUpdateApp.exe";
-            
+            string _updateAppPath = textBox1.Text;
+
             if (File.Exists(_updateAppPath))
             {
                 ProcessStartInfo processStartInfo = new ProcessStartInfo()
