@@ -76,13 +76,13 @@ namespace HHUpdateApp
 
             //通过业务应用程序名，获取其所在位置
             Process[] processes = Process.GetProcessesByName(launchAppName);
-           
+
             if (processes.Length > 0)
             {
                 //获取 需要更新的业务应用程序所在目录
                 string launchAppDirectoryName = Path.GetDirectoryName(processes[0].MainModule.FileName);
                 UpdateWork work = new UpdateWork(launchAppDirectoryName, verInfo);
-               
+
                 //关闭业务应用程序关联的进程
                 foreach (Process p in processes)
                 {
@@ -169,7 +169,7 @@ namespace HHUpdateApp
                 }
                 catch (Exception ex)
                 {
-                    //Program.AppLog.WarnFormat("升级信息从 {0} 下载失败：{1}", updateInfoUrl, ex.Message);
+                    LogManger.Instance.Error("下载服务器上版本信息错误", ex);
                     HHMessageBox.Show(string.Format("升级信息从 {0} 下载失败：{1}", serverUrl, ex.Message), "错误");
                     return null;
                 }
@@ -181,7 +181,7 @@ namespace HHUpdateApp
                 }
                 catch (Exception ex)
                 {
-                    //Program.AppLog.ErrorFormat("升级 json 文件错误：{0}\r\n{0}", ex.Message, updateJson);
+                    LogManger.Instance.Error("升级 json 文件错误", ex);
                     HHMessageBox.Show(string.Format("升级 json 文件错误：{0}\r\n{0}", ex.Message, updateJson), "错误");
                     return null;
                 }
