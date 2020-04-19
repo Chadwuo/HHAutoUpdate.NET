@@ -25,7 +25,7 @@ namespace HHUpdateApp
                 try
                 {
                     //拉起更新请求的业务程序，稍后更新时，根据这个值关闭对应的进程
-                    string launchAppName = "HHUpdate.Test";//args[0];
+                    string launchAppName = args[0];
 
 
                     /* 当前用户是管理员的时候，直接启动应用程序 

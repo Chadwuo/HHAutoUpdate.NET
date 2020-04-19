@@ -80,6 +80,7 @@ namespace HHUpdateApp
                 btnWelcome.Text = "欢迎使用";
                 lblMsg.Text = "程序集版本:" + work.RemoteVerInfo.ReleaseVersion;
                 lblAd.Visible = true;
+                LogManger.Instance.Error("更新应用程序错误：", e.Error);
             }
             else
             {

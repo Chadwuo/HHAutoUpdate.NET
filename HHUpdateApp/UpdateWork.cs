@@ -94,7 +94,7 @@ namespace HHUpdateApp
             string[] AppStartName = RemoteVerInfo.ApplicationStart.Split('#');
             foreach (var item in AppStartName)
             {
-                LogTool.AddLog("更新程序：启动" + item);
+                LogManger.Instance.Info("应用程序重启：启动" + item);
                 Process.Start(Path.Combine(ProgramDirectoryName, item));
             }
             return;
@@ -110,14 +110,14 @@ namespace HHUpdateApp
             {
                 try
                 {
-                    LogTool.AddLog("更新程序：下载更新包文件" + RemoteVerInfo.ReleaseVersion);
+                    LogManger.Instance.Info("下载更新程序：下载更新包文件" + RemoteVerInfo.ReleaseVersion);
                     web.DownloadFile(RemoteVerInfo.ReleaseUrl, tempPath + RemoteVerInfo.ReleaseVersion + ".zip");
 
                     return;
                 }
                 catch (Exception ex)
                 {
-                    LogTool.AddLog("更新程序：更新包文件" + RemoteVerInfo.ReleaseVersion + "下载失败,本次停止更新，异常信息：" + ex.Message);
+                    LogManger.Instance.Error("下载更新程序：更新包文件" + RemoteVerInfo.ReleaseVersion + "下载失败,本次停止更新，异常信息：" + ex);
                     throw ex;
                 }
 
@@ -125,13 +125,12 @@ namespace HHUpdateApp
         }
 
         /// <summary>
-        /// 备份当前的程序目录信息
+        /// 备份应用程序
         /// </summary>
         public void Bak()
         {
             try
             {
-                LogTool.AddLog("更新程序：准备执行备份操作");
                 DirectoryInfo di = new DirectoryInfo(ProgramDirectoryName);
                 foreach (var item in di.GetFiles())
                 {
@@ -146,7 +145,7 @@ namespace HHUpdateApp
                         CopyDirectory(item.FullName, bakPath);
                     }
                 }
-                LogTool.AddLog("更新程序：备份操作执行完成,开始关闭应用程序");
+                LogManger.Instance.Info("备份应用程序：备份操作执行完成");
                 return;
             }
             catch (Exception ex)
@@ -155,6 +154,9 @@ namespace HHUpdateApp
             }
         }
 
+        /// <summary>
+        /// 更新应用程序
+        /// </summary>
         public void Update()
         {
             try
@@ -164,26 +166,25 @@ namespace HHUpdateApp
                 {
                     DelLocal();
                 }
-                string path = tempPath + RemoteVerInfo.ReleaseVersion + ".zip";
-                using (ZipFile zip = new ZipFile(path))
+                string packageFileName = tempPath + RemoteVerInfo.ReleaseVersion + ".zip";
+
+                using (ZipFile zip = new ZipFile(packageFileName, Encoding.Default))
                 {
-                    LogTool.AddLog("更新程序：解压" + RemoteVerInfo.ReleaseVersion + ".zip");
                     zip.ExtractAll(ProgramDirectoryName, ExtractExistingFileAction.OverwriteSilently);
-                    LogTool.AddLog("更新程序：" + RemoteVerInfo.ReleaseVersion + ".zip" + "解压完成");
+                    LogManger.Instance.Info("更新应用程序：" + RemoteVerInfo.ReleaseVersion + ".zip" + "解压完成");
                 }
             }
             catch (Exception ex)
             {
-                LogTool.AddLog("更新程序出现异常：异常信息：" + ex.Message);
-                LogTool.AddLog("更新程序：更新失败，进行回滚操作");
+                LogManger.Instance.Error("更新应用程序错误" ,ex);
+                LogManger.Instance.Info("进行回滚操作");
                 Restore();
             }
             finally
             {
                 //删除下载的临时文件
-                LogTool.AddLog("更新程序：删除临时文件" + RemoteVerInfo.ReleaseVersion);
                 DelTempFile(RemoteVerInfo.ReleaseVersion + ".zip");//删除更新包
-                LogTool.AddLog("更新程序：临时文件删除完成" + RemoteVerInfo.ReleaseVersion);
+                LogManger.Instance.Info("更新程序：临时文件删除完成" + RemoteVerInfo.ReleaseVersion);
             }
         }
 
