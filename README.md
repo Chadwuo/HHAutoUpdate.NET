@@ -2,10 +2,10 @@
 HHUpdateAppÊÇ.NET³ÌÐò×ÀÃæÓ¦ÓÃ³ÌÐò¡£Ëý¿ÉÒÔÇáËÉµØ½«×Ô¶¯¸üÐÂÉý¼¶¹¦ÄÜÌí¼Óµ½¾­µä×ÀÃæÓ¦ÓÃ³ÌÐòÏîÄ¿ÖÐ¡£
 
 
-##ÈçºÎÔË×÷
+## ÈçºÎÔË×÷
 HHUpdateApp´ÓÄúµÄ·þÎñÆ÷ÏÂÔØ°üº¬¸üÐÂÐÅÏ¢µÄJSONÎÄ¼þ¡£ËüÊ¹ÓÃ´ËJSONÎÄ¼þÀ´»ñÈ¡ÐèÒª¼ì²â¸üÐÂµÄ¡¾ÒµÎñÓ¦ÓÃ³ÌÐò¡¿ÓÐ¹ØÈí¼þ×îÐÂ°æ±¾µÄÐÅÏ¢¡£Èç¹û¸ÃÈí¼þµÄ×îÐÂ°æ±¾´óÓÚÔÚÓÃ»§PCÉÏµÄµ±Ç°Èí¼þ°æ±¾£¬ÔòHHUpdateApp½«ÏòÓÃ»§ÏÔÊ¾¸üÐÂ¶Ô»°¿ò¡£Èç¹ûÓÃ»§°´ÏÂ¸üÐÂ°´Å¥À´¸üÐÂÈí¼þ£¬ÔòËü½«´ÓJSONÎÄ¼þÖÐÌá¹©µÄURLÏÂÔØ¸üÐÂÎÄ¼þ£¨zip°²×°ÎÄ¼þ£©¡£Ö®ºóÖ´ÐÐ¸üÐÂÊÇ°²×°³ÌÐòµÄ¹¤×÷£¬HHUpdateApp»á½«zipÎÄ¼þµÄÄÚÈÝÌáÈ¡µ½Ó¦ÓÃ³ÌÐòÄ¿Â¼ÖÐÌæ»»Éý¼¶Ô­Ó¦ÓÃ³ÌÐòÎÄ¼þ¡£
 
-##ÅäÖÃÑ¡Ïî
+## ÅäÖÃÑ¡Ïî
 ### HHUpdateApp.exe.config
 ÅäÖÃÉý¼¶³ÌÐò£¬ÒÔÊ¹Æä¿ÉÒÔ´ÓÕýÈ·ÅäÖÃµÄ·þÎñÆ÷ÉÏ»ñÈ¡Ïà¹ØÒµÎñ³ÌÐò¸üÐÂÐÅÏ¢
 ```xml
@@ -38,25 +38,24 @@ HHUpdateApp´ÓÄúµÄ·þÎñÆ÷ÏÂÔØ°üº¬¸üÐÂÐÅÏ¢µÄJSONÎÄ¼þ¡£ËüÊ¹ÓÃ´ËJSONÎÄ¼þÀ´»ñÈ¡ÐèÒª¼ì²
 }
 ```
 
-##ÒµÎñÓ¦ÓÃ³ÌÐòÖÐÌí¼Ó´úÂëÒÔÊ¹ÆäÆð×÷ÓÃ
+## ÒµÎñÓ¦ÓÃ³ÌÐòÖÐÌí¼Ó´úÂëÒÔÊ¹ÆäÆð×÷ÓÃ
 ```csharp
-				ProcessStartInfo processStartInfo = new ProcessStartInfo()
-                {
-                    FileName = "~\HHUpdateApp.ext",//²ÎÊý:HHUpdateApp³ÌÐòÂ·¾¶
-                    Arguments = "ÒµÎñÓ¦ÓÃ³ÌÐò "//²ÎÊý:·¢Æð¸üÐÂµÄ¡¾ÒµÎñÓ¦ÓÃ³ÌÐò¡¿Ãû³Æ
-                };
-				//Æô¶¯ÓÉ°üº¬½ø³ÌÆô¶¯ÐÅÏ¢µÄ²ÎÊýÖ¸¶¨µÄ½ø³Ì×ÊÔ´£¬²¢½«¸Ã×ÊÔ´ÓëÐÂµÄSystem.Diagnostics.Process ×é¼þ¹ØÁª¡£
-                Process proc = Process.Start(processStartInfo);
+    ProcessStartInfo processStartInfo = new ProcessStartInfo()
+    {
+        FileName = "~\HHUpdateApp.ext",//²ÎÊý:HHUpdateApp³ÌÐòÂ·¾¶
+        Arguments = "ÒµÎñÓ¦ÓÃ³ÌÐò "//²ÎÊý:·¢Æð¸üÐÂµÄ¡¾ÒµÎñÓ¦ÓÃ³ÌÐò¡¿Ãû³Æ
+    };
+    //Æô¶¯ÓÉ°üº¬½ø³ÌÆô¶¯ÐÅÏ¢µÄ²ÎÊýÖ¸¶¨µÄ½ø³Ì×ÊÔ´£¬²¢½«¸Ã×ÊÔ´ÓëÐÂµÄSystem.Diagnostics.Process ×é¼þ¹ØÁª¡£
+    Process proc = Process.Start(processStartInfo);
 ```
 
-##Ê¾Àý
-![µ÷ÓÃÊ¾Àý](https://github.com/micahh28/HHUpdateApp/blob/master/Images/demo.png "µ÷ÓÃÊ¾Àý")
+## Ê¾Àý
 ![µ÷ÓÃÊ¾Àý](https://github.com/micahh28/HHUpdateApp/blob/master/Images/demo1.png "µ÷ÓÃÊ¾Àý")
-![µ÷ÓÃÊ¾Àý](https://github.com/micahh28/HHUpdateApp/blob/master/Images/demo2.png "µ÷ÓÃÊ¾Àý")
-![µ÷ÓÃÊ¾Àý](https://github.com/micahh28/HHUpdateApp/blob/master/Images/demo3.png "µ÷ÓÃÊ¾Àý")
-![µ÷ÓÃÊ¾Àý](https://github.com/micahh28/HHUpdateApp/blob/master/Images/demo4.png "µ÷ÓÃÊ¾Àý")
-![µ÷ÓÃÊ¾Àý](https://github.com/micahh28/HHUpdateApp/blob/master/Images/demo5.png "µ÷ÓÃÊ¾Àý")
-![µ÷ÓÃÊ¾Àý](https://github.com/micahh28/HHUpdateApp/blob/master/Images/demo6.png "µ÷ÓÃÊ¾Àý")
+![¸üÐÂÊ¾Àý](https://github.com/micahh28/HHUpdateApp/blob/master/Images/demo2.png "¸üÐÂÊ¾Àý")
+![¸üÐÂÊ¾Àý](https://github.com/micahh28/HHUpdateApp/blob/master/Images/demo3.png "¸üÐÂÊ¾Àý")
+![¸üÐÂÊ¾Àý](https://github.com/micahh28/HHUpdateApp/blob/master/Images/demo4.png "¸üÐÂÊ¾Àý")
+![´íÎóÏûÏ¢Ê¾Àý](https://github.com/micahh28/HHUpdateApp/blob/master/Images/demo5.png "´íÎóÏûÏ¢Ê¾Àý")
+![ÌáÊ¾ÏûÏ¢Ê¾Àý](https://github.com/micahh28/HHUpdateApp/blob/master/Images/demo6.png "ÌáÊ¾ÏûÏ¢Ê¾Àý")
 
 >ÉÏÃæÊ¾ÀýÖÐÊ¹ÓÃµÄ´úÂëÆ¬¶Î
 
