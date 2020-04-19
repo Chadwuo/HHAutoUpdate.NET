@@ -1,80 +1,82 @@
 # HHUpdateApp
-HHUpdateAppÊÇ.NET³ÌÐò×ÀÃæÓ¦ÓÃ³ÌÐò¡£Ëý¿ÉÒÔÇáËÉµØ½«×Ô¶¯¸üÐÂÉý¼¶¹¦ÄÜÌí¼Óµ½¾­µä×ÀÃæÓ¦ÓÃ³ÌÐòÏîÄ¿ÖÐ¡£
+ ![https://github.com/micahh28/HHUpdateApp/stargazers](https://img.shields.io/badge/Star-%E2%98%85%E2%98%85%E2%98%85%E2%98%85%E2%98%86-green)
+
+HHUpdateAppæ˜¯.NETç¨‹åºæ¡Œé¢åº”ç”¨ç¨‹åºã€‚å¥¹å¯ä»¥è½»æ¾åœ°å°†è‡ªåŠ¨æ›´æ–°å‡çº§åŠŸèƒ½æ·»åŠ åˆ°ç»å…¸æ¡Œé¢åº”ç”¨ç¨‹åºé¡¹ç›®ä¸­ã€‚
 
 
-## ÈçºÎÔË×÷
-HHUpdateApp´ÓÄúµÄ·þÎñÆ÷ÏÂÔØ°üº¬¸üÐÂÐÅÏ¢µÄJSONÎÄ¼þ¡£ËüÊ¹ÓÃ´ËJSONÎÄ¼þÀ´»ñÈ¡ÐèÒª¼ì²â¸üÐÂµÄ¡¾ÒµÎñÓ¦ÓÃ³ÌÐò¡¿ÓÐ¹ØÈí¼þ×îÐÂ°æ±¾µÄÐÅÏ¢¡£Èç¹û¸ÃÈí¼þµÄ×îÐÂ°æ±¾´óÓÚÔÚÓÃ»§PCÉÏµÄµ±Ç°Èí¼þ°æ±¾£¬ÔòHHUpdateApp½«ÏòÓÃ»§ÏÔÊ¾¸üÐÂ¶Ô»°¿ò¡£Èç¹ûÓÃ»§°´ÏÂ¸üÐÂ°´Å¥À´¸üÐÂÈí¼þ£¬ÔòËü½«´ÓJSONÎÄ¼þÖÐÌá¹©µÄURLÏÂÔØ¸üÐÂÎÄ¼þ£¨zip°²×°ÎÄ¼þ£©¡£Ö®ºóÖ´ÐÐ¸üÐÂÊÇ°²×°³ÌÐòµÄ¹¤×÷£¬HHUpdateApp»á½«zipÎÄ¼þµÄÄÚÈÝÌáÈ¡µ½Ó¦ÓÃ³ÌÐòÄ¿Â¼ÖÐÌæ»»Éý¼¶Ô­Ó¦ÓÃ³ÌÐòÎÄ¼þ¡£
+## å¦‚ä½•è¿ä½œ
+HHUpdateAppä»Žæ‚¨çš„æœåŠ¡å™¨ä¸‹è½½åŒ…å«æ›´æ–°ä¿¡æ¯çš„JSONæ–‡ä»¶ã€‚å®ƒä½¿ç”¨æ­¤JSONæ–‡ä»¶æ¥èŽ·å–éœ€è¦æ£€æµ‹æ›´æ–°çš„ã€ä¸šåŠ¡åº”ç”¨ç¨‹åºã€‘æœ‰å…³è½¯ä»¶æœ€æ–°ç‰ˆæœ¬çš„ä¿¡æ¯ã€‚å¦‚æžœè¯¥è½¯ä»¶çš„æœ€æ–°ç‰ˆæœ¬å¤§äºŽåœ¨ç”¨æˆ·PCä¸Šçš„å½“å‰è½¯ä»¶ç‰ˆæœ¬ï¼Œåˆ™HHUpdateAppå°†å‘ç”¨æˆ·æ˜¾ç¤ºæ›´æ–°å¯¹è¯æ¡†ã€‚å¦‚æžœç”¨æˆ·æŒ‰ä¸‹æ›´æ–°æŒ‰é’®æ¥æ›´æ–°è½¯ä»¶ï¼Œåˆ™å®ƒå°†ä»ŽJSONæ–‡ä»¶ä¸­æä¾›çš„URLä¸‹è½½æ›´æ–°æ–‡ä»¶ï¼ˆzipå®‰è£…æ–‡ä»¶ï¼‰ã€‚ä¹‹åŽæ‰§è¡Œæ›´æ–°æ˜¯å®‰è£…ç¨‹åºçš„å·¥ä½œï¼ŒHHUpdateAppä¼šå°†zipæ–‡ä»¶çš„å†…å®¹æå–åˆ°åº”ç”¨ç¨‹åºç›®å½•ä¸­æ›¿æ¢å‡çº§åŽŸåº”ç”¨ç¨‹åºæ–‡ä»¶ã€‚
 
-## ÅäÖÃÑ¡Ïî
+## é…ç½®é€‰é¡¹
 ### HHUpdateApp.exe.config
-ÅäÖÃÉý¼¶³ÌÐò£¬ÒÔÊ¹Æä¿ÉÒÔ´ÓÕýÈ·ÅäÖÃµÄ·þÎñÆ÷ÉÏ»ñÈ¡Ïà¹ØÒµÎñ³ÌÐò¸üÐÂÐÅÏ¢
+é…ç½®å‡çº§ç¨‹åºï¼Œä»¥ä½¿å…¶å¯ä»¥ä»Žæ­£ç¡®é…ç½®çš„æœåŠ¡å™¨ä¸ŠèŽ·å–ç›¸å…³ä¸šåŠ¡ç¨‹åºæ›´æ–°ä¿¡æ¯
 ```xml
 <HHUpdateApp.Properties.Settings>
-            <!--HHUpdateApp½«ÏÂÔØ´Ë´¦Ìá¹©µÄ¸üÐÂÐÅÏ¢µÄJSONÎÄ¼þ-->
+            <!--HHUpdateAppå°†ä¸‹è½½æ­¤å¤„æä¾›çš„æ›´æ–°ä¿¡æ¯çš„JSONæ–‡ä»¶-->
             <setting name="ServerUpdateUrl" serializeAs="String">
                 <value>http://localhost:8020/version.json</value>
             </setting>
-			<!--ÉèÖÃÒ»¸ö°æ±¾ºÅ£¬ÔòºöÂÔÕâ¸ö°æ±¾µÄ¸üÐÂ-->
+			<!--è®¾ç½®ä¸€ä¸ªç‰ˆæœ¬å·ï¼Œåˆ™å¿½ç•¥è¿™ä¸ªç‰ˆæœ¬çš„æ›´æ–°-->
             <setting name="LocalIgnoreVer" serializeAs="String">
                 <value />
             </setting>
-			<!--ÊÇ·ñ¾²ÇÄÇÄÉý¼¶-->
+			<!--æ˜¯å¦é™æ‚„æ‚„å‡çº§-->
             <setting name="SilentUpdate" serializeAs="String">
                 <value>False</value>
             </setting>
 </HHUpdateApp.Properties.Settings>
 ```
 ### Versions.json
-ÅäÖÃ·þÎñÆ÷ÉÏ°üº¬¸üÐÂÐÅÏ¢µÄJSONÎÄ¼þ
+é…ç½®æœåŠ¡å™¨ä¸ŠåŒ…å«æ›´æ–°ä¿¡æ¯çš„JSONæ–‡ä»¶
 ```json
 {
-  "ApplicationStart": "¸üÐÂºóÆô¶¯µÄÓ¦ÓÃ³ÌÐòÃû£¬¶à¸öÎÄ¼þÓÃ # ºÅ·Ö¸î",
-  "ReleaseDate": "·¢²¼Ê±¼ä",
-  "ReleaseUrl": "·¢²¼µØÖ·",
-  "ReleaseVersion": "·¢²¼°æ±¾ºÅ",
-  "UpdateMode": "¸üÐÂ·½Ê½£ºCover±íÊ¾¸²¸ÇÔ­ÎÄ¼þ¸üÐÂ£¬NewInstall±íÊ¾É¾³ýÔ´ÎÄ¼þÈ«ÐÂ°²×°",
-  "VersionDesc": "¸üÐÂÃèÊöËµÃ÷",
-  "IgnoreFile": "¸üÐÂ¹ý³ÌÖÐºöÂÔµÄÎÄ¼þ£¬¶à¸öÎÄ¼þÓÃ # ºÅ·Ö¸î"
+  "ApplicationStart": "æ›´æ–°åŽå¯åŠ¨çš„åº”ç”¨ç¨‹åºåï¼Œå¤šä¸ªæ–‡ä»¶ç”¨ # å·åˆ†å‰²",
+  "ReleaseDate": "å‘å¸ƒæ—¶é—´",
+  "ReleaseUrl": "å‘å¸ƒåœ°å€",
+  "ReleaseVersion": "å‘å¸ƒç‰ˆæœ¬å·",
+  "UpdateMode": "æ›´æ–°æ–¹å¼ï¼šCoverè¡¨ç¤ºè¦†ç›–åŽŸæ–‡ä»¶æ›´æ–°ï¼ŒNewInstallè¡¨ç¤ºåˆ é™¤æºæ–‡ä»¶å…¨æ–°å®‰è£…",
+  "VersionDesc": "æ›´æ–°æè¿°è¯´æ˜Ž",
+  "IgnoreFile": "æ›´æ–°è¿‡ç¨‹ä¸­å¿½ç•¥çš„æ–‡ä»¶ï¼Œå¤šä¸ªæ–‡ä»¶ç”¨ # å·åˆ†å‰²"
 }
 ```
 
-## ÒµÎñÓ¦ÓÃ³ÌÐòÖÐÌí¼Ó´úÂëÒÔÊ¹ÆäÆð×÷ÓÃ
+## ä¸šåŠ¡åº”ç”¨ç¨‹åºä¸­æ·»åŠ ä»£ç ä»¥ä½¿å…¶èµ·ä½œç”¨
 ```csharp
     ProcessStartInfo processStartInfo = new ProcessStartInfo()
     {
-        FileName = "~\HHUpdateApp.ext",//²ÎÊý:HHUpdateApp³ÌÐòÂ·¾¶
-        Arguments = "ÒµÎñÓ¦ÓÃ³ÌÐò "//²ÎÊý:·¢Æð¸üÐÂµÄ¡¾ÒµÎñÓ¦ÓÃ³ÌÐò¡¿Ãû³Æ
+        FileName = "~\HHUpdateApp.ext",//å‚æ•°:HHUpdateAppç¨‹åºè·¯å¾„
+        Arguments = "ä¸šåŠ¡åº”ç”¨ç¨‹åº "//å‚æ•°:å‘èµ·æ›´æ–°çš„ã€ä¸šåŠ¡åº”ç”¨ç¨‹åºã€‘åç§°
     };
-    //Æô¶¯ÓÉ°üº¬½ø³ÌÆô¶¯ÐÅÏ¢µÄ²ÎÊýÖ¸¶¨µÄ½ø³Ì×ÊÔ´£¬²¢½«¸Ã×ÊÔ´ÓëÐÂµÄSystem.Diagnostics.Process ×é¼þ¹ØÁª¡£
+    //å¯åŠ¨ç”±åŒ…å«è¿›ç¨‹å¯åŠ¨ä¿¡æ¯çš„å‚æ•°æŒ‡å®šçš„è¿›ç¨‹èµ„æºï¼Œå¹¶å°†è¯¥èµ„æºä¸Žæ–°çš„System.Diagnostics.Process ç»„ä»¶å…³è”ã€‚
     Process proc = Process.Start(processStartInfo);
 ```
 
-## Ê¾Àý
-![µ÷ÓÃÊ¾Àý](https://github.com/micahh28/HHUpdateApp/blob/master/Images/demo1.png "µ÷ÓÃÊ¾Àý")
-![¸üÐÂÊ¾Àý](https://github.com/micahh28/HHUpdateApp/blob/master/Images/demo2.png "¸üÐÂÊ¾Àý")
-![¸üÐÂÊ¾Àý](https://github.com/micahh28/HHUpdateApp/blob/master/Images/demo3.png "¸üÐÂÊ¾Àý")
-![¸üÐÂÊ¾Àý](https://github.com/micahh28/HHUpdateApp/blob/master/Images/demo4.png "¸üÐÂÊ¾Àý")
-![´íÎóÏûÏ¢Ê¾Àý](https://github.com/micahh28/HHUpdateApp/blob/master/Images/demo5.png "´íÎóÏûÏ¢Ê¾Àý")
-![ÌáÊ¾ÏûÏ¢Ê¾Àý](https://github.com/micahh28/HHUpdateApp/blob/master/Images/demo6.png "ÌáÊ¾ÏûÏ¢Ê¾Àý")
+## ç¤ºä¾‹
+![è°ƒç”¨ç¤ºä¾‹](https://github.com/micahh28/HHUpdateApp/blob/master/Images/demo1.png "è°ƒç”¨ç¤ºä¾‹")
+![æ›´æ–°ç¤ºä¾‹](https://github.com/micahh28/HHUpdateApp/blob/master/Images/demo2.png "æ›´æ–°ç¤ºä¾‹")
+![æ›´æ–°ç¤ºä¾‹](https://github.com/micahh28/HHUpdateApp/blob/master/Images/demo3.png "æ›´æ–°ç¤ºä¾‹")
+![æ›´æ–°ç¤ºä¾‹](https://github.com/micahh28/HHUpdateApp/blob/master/Images/demo4.png "æ›´æ–°ç¤ºä¾‹")
+![é”™è¯¯æ¶ˆæ¯ç¤ºä¾‹](https://github.com/micahh28/HHUpdateApp/blob/master/Images/demo5.png "é”™è¯¯æ¶ˆæ¯ç¤ºä¾‹")
+![æç¤ºæ¶ˆæ¯ç¤ºä¾‹](https://github.com/micahh28/HHUpdateApp/blob/master/Images/demo6.png "æç¤ºæ¶ˆæ¯ç¤ºä¾‹")
 
->ÉÏÃæÊ¾ÀýÖÐÊ¹ÓÃµÄ´úÂëÆ¬¶Î
+>ä¸Šé¢ç¤ºä¾‹ä¸­ä½¿ç”¨çš„ä»£ç ç‰‡æ®µ
 
 ```csharp
 /// <summary>
-/// ¼ì²é¸üÐÂ°´Å¥
+/// æ£€æŸ¥æ›´æ–°æŒ‰é’®
 /// </summary>
 /// <param name="sender"></param>
 /// <param name="e"></param>
 private void button1_Click(object sender, EventArgs e)
         {
-            string _updateAppPath = textBox1.Text;//ÊäÈëÉý¼¶³ÌÐòËùÔÚÄ¿Â¼
+            string _updateAppPath = textBox1.Text;//è¾“å…¥å‡çº§ç¨‹åºæ‰€åœ¨ç›®å½•
 
-            if (File.Exists(_updateAppPath))//Éý¼¶³ÌÐòÊÇ·ñ´æÔÚ
+            if (File.Exists(_updateAppPath))//å‡çº§ç¨‹åºæ˜¯å¦å­˜åœ¨
             {
                 ProcessStartInfo processStartInfo = new ProcessStartInfo()
                 {
-                    FileName = _updateAppPath,//Â·¾¶
-                    Arguments = "HHUpdate.Test "//´ËÐèÒªÉý¼¶µÄÓ¦ÓÃ³ÌÐòÃû
+                    FileName = _updateAppPath,//è·¯å¾„
+                    Arguments = "HHUpdate.Test "//æ­¤éœ€è¦å‡çº§çš„åº”ç”¨ç¨‹åºå
                 };
                 Process proc = Process.Start(processStartInfo);
                 if (proc != null)
@@ -84,7 +86,7 @@ private void button1_Click(object sender, EventArgs e)
             }
         }
 ```
->ÉÏÃæÊ¾ÀýÖÐÊ¹ÓÃµÄJSONÎÄ¼þ
+>ä¸Šé¢ç¤ºä¾‹ä¸­ä½¿ç”¨çš„JSONæ–‡ä»¶
 
 ```json
 {
@@ -93,7 +95,7 @@ private void button1_Click(object sender, EventArgs e)
   "ReleaseUrl": "http://localhost:8085/UpdateDemo/Debug.zip",
   "ReleaseVersion": "1.0.0.0",
   "UpdateMode": "Cover",
-  "VersionDesc": "Ò»¸öÓÐÈ¤µÄ¹ÊÊÂ£¬µ±ÎÒÃÇ×î³õ×¼±¸ÖØ×öÀÖÜ½À¼Ê±ÒÑ¾­×¼±¸ºÃÁËÕâ¸öBUGµÄÐÞ¸´£¬µ«×îºó²¢Ã»ÓÐÊµ×°£¬ÒòÎªÕâ¸ö¼¼ÄÜ±»È¡´úÁË¡£\r\n1£¬ÐÞ¸´ÁËÒ»¸öBUG£¬¡¾±»¶¯ - ¾µ»¨Ë®ÔÂ¡¿ËùÕÙ»½µÄ·ÖÉíÔÚÆÕ¹¥ÃüÖÐÇ°ÕóÍö£¬ÄÇÃ´ËýËù½øÐÐµÄÆÕ¹¥»áÔì³ÉÉËº¦¡£\r\n2£¬ÐÂÔö£º¡¾¶ñÒâÄ§Ó¡¡¿½«ÎªÄ¿±êÊ©¼ÓÒ»¸öÓ¡¼Ç¡£\r\n3£¬ÀÖÜ½À¼ÖØ×öºóµÄ´óÕÐÀíÓ¦ÈÃËýÄÜ¹»Ñ¡Ôñ¸´ÖÆÄÄ¸ö¼¼ÄÜÀ´×ö³ö¸üÓÐÈ¤µÄÁ¬ÕÐ¡£",
+  "VersionDesc": "ä¸€ä¸ªæœ‰è¶£çš„æ•…äº‹ï¼Œå½“æˆ‘ä»¬æœ€åˆå‡†å¤‡é‡åšä¹èŠ™å…°æ—¶å·²ç»å‡†å¤‡å¥½äº†è¿™ä¸ªBUGçš„ä¿®å¤ï¼Œä½†æœ€åŽå¹¶æ²¡æœ‰å®žè£…ï¼Œå› ä¸ºè¿™ä¸ªæŠ€èƒ½è¢«å–ä»£äº†ã€‚\r\n1ï¼Œä¿®å¤äº†ä¸€ä¸ªBUGï¼Œã€è¢«åŠ¨ - é•œèŠ±æ°´æœˆã€‘æ‰€å¬å”¤çš„åˆ†èº«åœ¨æ™®æ”»å‘½ä¸­å‰é˜µäº¡ï¼Œé‚£ä¹ˆå¥¹æ‰€è¿›è¡Œçš„æ™®æ”»ä¼šé€ æˆä¼¤å®³ã€‚\r\n2ï¼Œæ–°å¢žï¼šã€æ¶æ„é­”å°ã€‘å°†ä¸ºç›®æ ‡æ–½åŠ ä¸€ä¸ªå°è®°ã€‚\r\n3ï¼Œä¹èŠ™å…°é‡åšåŽçš„å¤§æ‹›ç†åº”è®©å¥¹èƒ½å¤Ÿé€‰æ‹©å¤åˆ¶å“ªä¸ªæŠ€èƒ½æ¥åšå‡ºæ›´æœ‰è¶£çš„è¿žæ‹›ã€‚",
   "IgnoreFile": ""
 }
 ```
