@@ -18,11 +18,16 @@ namespace HHUpdateApp
         private string launchAppName;
 
         /// <summary>
+        /// 检查更新模式：0,自动更新；1，手动检查（区别就是，自动更新的状态下，除非有新版本更新，才会显示提示框）
+        /// </summary>
+        private string checkMode;
+
+        /// <summary>
         /// 服务器上的版本信息
         /// </summary>
         private RemoteVersionInfo verInfo;
 
-        public MainForm(string _launchAppName)
+        public MainForm(string _launchAppName, string _checkMode)
         {
             InitializeComponent();
             launchAppName = _launchAppName;
@@ -40,7 +45,12 @@ namespace HHUpdateApp
                 if (VersionCompare(currentAppVer, verInfo.ReleaseVersion) >= 0)
                 {
                     //this.Hide();//隐藏当前窗口
-                    HHMessageBox.Show("当前版本已经是最新版本");
+
+                    if (checkMode == "1")
+                    {
+                        HHMessageBox.Show("当前版本已经是最新版本");
+                    }
+
                     Application.Exit();
                 }
                 else
