@@ -26,6 +26,8 @@ namespace HHUpdateApp
                 {
                     //拉起更新请求的业务程序，稍后更新时，根据这个值关闭对应的进程
                     string launchAppName = args[0];
+                    //检查更新模式：0,自动更新；1，手动检查（区别就是，自动更新的状态下，如果有新版本更新，才会显示提示框）
+                    string checkMode = args[1];
 
 
                     /* 当前用户是管理员的时候，直接启动应用程序 
@@ -42,7 +44,7 @@ namespace HHUpdateApp
                     {
                         Application.EnableVisualStyles();
                         Application.SetCompatibleTextRenderingDefault(false);
-                        Application.Run(new MainForm(launchAppName));
+                        Application.Run(new MainForm(launchAppName, checkMode));
                     }
                     else
                     {
@@ -66,7 +68,7 @@ namespace HHUpdateApp
                         {
                             Application.EnableVisualStyles();
                             Application.SetCompatibleTextRenderingDefault(false);
-                            Application.Run(new MainForm(launchAppName));
+                            Application.Run(new MainForm(launchAppName, checkMode));
                         }
                     }
                 }

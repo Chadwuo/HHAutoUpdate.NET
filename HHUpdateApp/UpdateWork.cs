@@ -171,12 +171,12 @@ namespace HHUpdateApp
                 using (ZipFile zip = new ZipFile(packageFileName, Encoding.Default))
                 {
                     zip.ExtractAll(ProgramDirectoryName, ExtractExistingFileAction.OverwriteSilently);
-                    LogManger.Instance.Info("更新应用程序：" + RemoteVerInfo.ReleaseVersion + ".zip" + "解压完成");
+                    LogManger.Instance.Info("更新应用程序：" + RemoteVerInfo.ReleaseVersion + ".zip" + " 解压完成");
                 }
             }
             catch (Exception ex)
             {
-                LogManger.Instance.Error("更新应用程序错误" ,ex);
+                LogManger.Instance.Error("更新应用程序错误", ex);
                 LogManger.Instance.Info("进行回滚操作");
                 Restore();
             }
@@ -184,7 +184,7 @@ namespace HHUpdateApp
             {
                 //删除下载的临时文件
                 DelTempFile(RemoteVerInfo.ReleaseVersion + ".zip");//删除更新包
-                LogManger.Instance.Info("更新程序：临时文件删除完成" + RemoteVerInfo.ReleaseVersion);
+                LogManger.Instance.Info("更新程序：临时文件 " + RemoteVerInfo.ReleaseVersion + ".zip" + " 删除完成");
             }
         }
 
@@ -281,7 +281,7 @@ namespace HHUpdateApp
             {
                 throw ex;
             }
-            
+
         }
 
     }

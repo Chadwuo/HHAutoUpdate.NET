@@ -80,10 +80,11 @@ namespace HHUpdateApp
                 btnWelcome.Text = "欢迎使用";
                 lblMsg.Text = "程序集版本:" + work.RemoteVerInfo.ReleaseVersion;
                 lblAd.Visible = true;
-                LogManger.Instance.Error("更新应用程序错误：", e.Error);
+                lblAd.Text = "用心让交管业务更便捷";
             }
             else
             {
+                LogManger.Instance.Error("更新应用程序升级失败：", e.Error);
                 lblMsg.Text = e.Error.Message;
                 btnWelcome.Text = "确定";
             }
