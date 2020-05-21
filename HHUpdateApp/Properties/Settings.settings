@@ -12,7 +12,7 @@
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="ServerUpdateUrl" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">http://localhost:8020/TrafficQueue.Services/Versions.json</Value>
+      <Value Profile="(Default)">http://localhost:8020/HHversions.json</Value>
     </Setting>
   </Settings>
 </SettingsFile>

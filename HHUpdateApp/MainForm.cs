@@ -18,6 +18,21 @@ namespace HHUpdateApp
         private string launchAppName;
 
         /// <summary>
+        /// 需要更新的业务应用程序所在目录
+        /// </summary>
+        private string launchAppDirectoryName;
+
+        /// <summary>
+        /// 需要更新的业务应用程序版本号
+        /// </summary>
+        private string launchAppVer;
+
+        /// <summary>
+        /// 需要更新的业务应用程序关联的进程
+        /// </summary>
+        private Process[] launchProcess;
+
+        /// <summary>
         /// 检查更新模式：0,自动更新；1，手动检查（区别就是，自动更新的状态下，除非有新版本更新，才会显示提示框）
         /// </summary>
         private string checkMode;
@@ -36,14 +51,27 @@ namespace HHUpdateApp
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            //通过业务应用程序名，获取其进程信息
+            launchProcess = Process.GetProcessesByName(launchAppName);
+
+            if (launchProcess.Length > 0)
+            {
+                launchAppDirectoryName = Path.GetDirectoryName(launchProcess[0].MainModule.FileName);
+                launchAppVer = launchProcess[0].MainModule.FileVersionInfo.ProductVersion;
+            }
+            else
+            {
+                HHMessageBox.Show("应用程序未启动: _" + launchAppName);
+                Application.Exit();
+            }
+
             //下载服务器上版本更新信息
             verInfo = DownloadUpdateInfo(Program.ServerUpdateUrl);
 
             if (verInfo != null)
             {
                 //比较版本号
-                string currentAppVer = Application.ProductVersion;
-                if (VersionCompare(currentAppVer, verInfo.ReleaseVersion) >= 0)
+                if (VersionCompare(launchAppVer, verInfo.ReleaseVersion) >= 0)
                 {
                     //this.Hide();//隐藏当前窗口
 
@@ -85,35 +113,20 @@ namespace HHUpdateApp
         {
             this.Hide();//隐藏当前窗口
 
-            //通过业务应用程序名，获取其所在位置
-            Process[] processes = Process.GetProcessesByName(launchAppName);
+            UpdateWork work = new UpdateWork(launchAppDirectoryName, verInfo);
 
-            if (processes.Length > 0)
+            //关闭业务应用程序关联的进程
+            foreach (Process p in launchProcess)
             {
-                //获取 需要更新的业务应用程序所在目录
-                string launchAppDirectoryName = Path.GetDirectoryName(processes[0].MainModule.FileName);
-                UpdateWork work = new UpdateWork(launchAppDirectoryName, verInfo);
-
-                //关闭业务应用程序关联的进程
-                foreach (Process p in processes)
-                {
-                    p.Kill();
-                    p.Close();
-                }
-
-                UpdateForm updateForm = new UpdateForm(work);
-                if (updateForm.ShowDialog() == DialogResult.OK)
-                {
-                    Application.Exit();
-                }
+                p.Kill();
+                p.Close();
             }
-            else
+
+            UpdateForm updateForm = new UpdateForm(work);
+            if (updateForm.ShowDialog() == DialogResult.OK)
             {
-                HHMessageBox.Show("应用程序未启动: _" + launchAppName);
                 Application.Exit();
             }
-
-
         }
         /// <summary>
         /// 忽略本次版本更新
@@ -176,7 +189,7 @@ namespace HHUpdateApp
                 try
                 {
                     byte[] bJson = updateClt.DownloadData(serverUrl);
-                    updateJson = System.Text.Encoding.Default.GetString(bJson);
+                    updateJson = System.Text.Encoding.UTF8.GetString(bJson);
                 }
                 catch (Exception ex)
                 {

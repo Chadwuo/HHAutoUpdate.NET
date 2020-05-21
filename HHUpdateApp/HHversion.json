@@ -1,0 +1,9 @@
+{
+  "ApplicationStart": "更新后启动的应用程序名，多个文件用 # 号分割",
+  "ReleaseDate": "发布时间",
+  "ReleaseUrl": "发布地址",
+  "ReleaseVersion": "发布版本号",
+  "UpdateMode": "更新方式：Cover表示覆盖原文件更新，NewInstall表示删除源文件全新安装",
+  "VersionDesc": "更新描述说明",
+  "IgnoreFile": "更新过程中忽略的文件，多个文件用 # 号分割"
+}

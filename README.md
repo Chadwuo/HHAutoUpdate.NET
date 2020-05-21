@@ -5,7 +5,7 @@ HHUpdateApp是.NET程序桌面应用程序。她可以轻松地将自动更新�
 
 
 ## 如何运作
-HHUpdateApp从您的服务器下载包含更新信息的JSON文件。它使用此JSON文件来获取需要检测更新的PC上【业务应用程序】有关最新版本的信息。如果服务器上该【业务应用程序】的最新版本大于在用户PC上的当前版本，则HHUpdateApp将向用户显示更新对话框。如果用户按下更新按钮来更新软件，则它将从JSON文件中提供的URL下载更新文件（zip安装文件）。之后执行更新是安装程序的工作，HHUpdateApp会将zip文件的内容提取到应用程序目录中替换升级原应用程序文件。
+HHUpdateApp从您的服务器下载包含更新信息的JSON文件(HHversions.json)。它使用此JSON文件来获取需要检测更新的PC上【业务应用程序】有关最新版本的信息。如果服务器上该【业务应用程序】的最新版本大于在用户PC上的当前版本，则HHUpdateApp将向用户显示更新对话框。如果用户按下更新按钮来更新软件，则它将从JSON文件中提供的URL下载更新文件（zip安装文件）。之后执行更新是安装程序的工作，HHUpdateApp会将zip文件的内容提取到应用程序目录中替换升级原应用程序文件。
 
 ## 如何使用
 拒绝复杂头疼的设置，直接点击【HHUpdateApp.exe】，只需要填写您的【业务应用程序名称】（例如LOLClient）即可轻松的为您的LOLClient.exe应用程序检查更新。  
@@ -45,8 +45,8 @@ HHUpdateApp从您的服务器下载包含更新信息的JSON文件。它使用�
     Process proc = Process.Start(processStartInfo);
 ```
 
-###  Versions.json
-无论使用何种方式，配置服务器上包含更新信息的JSON文件都是必须的。将次配置文件放在应用程序可访问的服务器或远程电脑上。
+###  HHversions.json
+无论使用何种方式，配置服务器上包含更新信息的JSON文件都是必须的。将次配置文件放在应用程序可访问的服务器或远程电脑上。注意：HHversions.json必须是UTF8格式
 ```json
 {
   "ApplicationStart": "更新后启动的应用程序名，多个文件用 # 号分割",
@@ -94,7 +94,7 @@ private void button1_Click(object sender, EventArgs e)
             }
         }
 ```
->上面示例中使用的JSON文件
+>上面示例中使用的HHversions.JSON文件
 
 ```json
 {

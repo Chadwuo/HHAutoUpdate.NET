@@ -52,7 +52,7 @@ namespace HHUpdateApp.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://localhost:8020/TrafficQueue.Services/Versions.json")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://localhost:8020/HHversions.json")]
         public string ServerUpdateUrl {
             get {
                 return ((string)(this["ServerUpdateUrl"]));
