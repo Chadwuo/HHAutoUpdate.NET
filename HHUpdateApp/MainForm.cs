@@ -31,12 +31,13 @@ namespace HHUpdateApp
         {
             InitializeComponent();
             launchAppName = _launchAppName;
+            checkMode = _checkMode;
         }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
             //下载服务器上版本更新信息
-            verInfo = DownloadUpdateInfo(Settings.Default.ServerUpdateUrl);
+            verInfo = DownloadUpdateInfo(Program.ServerUpdateUrl);
 
             if (verInfo != null)
             {
@@ -175,7 +176,7 @@ namespace HHUpdateApp
                 try
                 {
                     byte[] bJson = updateClt.DownloadData(serverUrl);
-                    updateJson = System.Text.Encoding.UTF8.GetString(bJson);
+                    updateJson = System.Text.Encoding.Default.GetString(bJson);
                 }
                 catch (Exception ex)
                 {

@@ -12,7 +12,7 @@ namespace HHUpdateApp.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.4.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.9.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -20,15 +20,6 @@ namespace HHUpdateApp.Properties {
         public static Settings Default {
             get {
                 return defaultInstance;
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://localhost:8020/TrafficQueue.Services/version.json")]
-        public string ServerUpdateUrl {
-            get {
-                return ((string)(this["ServerUpdateUrl"]));
             }
         }
         
@@ -47,6 +38,24 @@ namespace HHUpdateApp.Properties {
         public bool SilentUpdate {
             get {
                 return ((bool)(this["SilentUpdate"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string LaunchAppName {
+            get {
+                return ((string)(this["LaunchAppName"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://localhost:8020/TrafficQueue.Services/Versions.json")]
+        public string ServerUpdateUrl {
+            get {
+                return ((string)(this["ServerUpdateUrl"]));
             }
         }
     }
