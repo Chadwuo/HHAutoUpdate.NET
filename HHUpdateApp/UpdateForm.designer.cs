@@ -55,7 +55,7 @@
             this.LBTitle.Name = "LBTitle";
             this.LBTitle.Size = new System.Drawing.Size(54, 19);
             this.LBTitle.TabIndex = 25;
-            this.LBTitle.Text = "新版本";
+            this.LBTitle.Text = "升级";
             // 
             // lblMsg
             // 

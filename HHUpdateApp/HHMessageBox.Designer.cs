@@ -82,7 +82,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.ClientSize = new System.Drawing.Size(525, 331);
+            this.ClientSize = new System.Drawing.Size(525, 330);
             this.Controls.Add(this.btnOk);
             this.Controls.Add(this.lblContent);
             this.Controls.Add(this.LBTitle);
