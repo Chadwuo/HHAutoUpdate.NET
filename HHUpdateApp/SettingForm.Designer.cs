@@ -102,16 +102,16 @@
             // 
             // txtLaunchAppName
             // 
-            this.txtLaunchAppName.Location = new System.Drawing.Point(229, 97);
+            this.txtLaunchAppName.Location = new System.Drawing.Point(188, 97);
             this.txtLaunchAppName.Name = "txtLaunchAppName";
-            this.txtLaunchAppName.Size = new System.Drawing.Size(232, 21);
+            this.txtLaunchAppName.Size = new System.Drawing.Size(273, 21);
             this.txtLaunchAppName.TabIndex = 31;
             // 
             // txtServerUpdateUrl
             // 
-            this.txtServerUpdateUrl.Location = new System.Drawing.Point(229, 147);
+            this.txtServerUpdateUrl.Location = new System.Drawing.Point(188, 147);
             this.txtServerUpdateUrl.Name = "txtServerUpdateUrl";
-            this.txtServerUpdateUrl.Size = new System.Drawing.Size(232, 21);
+            this.txtServerUpdateUrl.Size = new System.Drawing.Size(273, 21);
             this.txtServerUpdateUrl.TabIndex = 33;
             // 
             // lblServerUpdateUrl
