@@ -8,12 +8,12 @@ HHUpdateApp是.NET程序桌面应用程序。她可以轻松地将自动更新�
 HHUpdateApp从您的服务器下载包含更新信息的JSON文件(HHversions.json)。它使用此JSON文件来获取需要检测更新的PC上【业务应用程序】有关最新版本的信息。如果服务器上该【业务应用程序】的最新版本大于在用户PC上的当前版本，则HHUpdateApp将向用户显示更新对话框。如果用户按下更新按钮来更新软件，则它将从JSON文件中提供的URL下载更新文件（zip安装文件）。之后执行更新是安装程序的工作，HHUpdateApp会将zip文件的内容提取到应用程序目录中替换升级原应用程序文件。
 
 ## 如何使用
-拒绝复杂头疼的设置，直接点击【HHUpdateApp.exe】，只需要填写您的【业务应用程序名称】（例如LOLClient）即可轻松的为您的LOLClient.exe应用程序检查更新。  
+拒绝复杂的设置，直接点击【HHUpdateApp.exe】，只需要填写【业务应用程序名称】（例如LOLClient）即可轻松的为您的LOLClient.exe应用程序检查更新。  
 ![调用示例](https://github.com/micahh28/HHUpdateApp/blob/master/Images/demo1.png "调用示例")
 
 ## 开发者使用
 ### 1，配置HHUpdateApp.exe.config
-配置升级程序，以使其可以从正确配置的服务器上获取相关业务程序更新信息
+配置升级程序，主要需要配置包含更新信息的JSON文件(HHversions.json)所在路径。
 ```xml
 <HHUpdateApp.Properties.Settings>
             <!--HHUpdateApp将下载此处提供的更新信息的JSON文件-->
@@ -34,7 +34,8 @@ HHUpdateApp从您的服务器下载包含更新信息的JSON文件(HHversions.js
             </setting>
 </HHUpdateApp.Properties.Settings>
 ```
-### 2，在您的【应用程序】中添加代码以使其对HHUpdateApp发起调用
+### 2，在【应用程序】中添加代码以使其对HHUpdateApp发起调用
+添加调用检测升级更新的方法
 ```csharp
     ProcessStartInfo processStartInfo = new ProcessStartInfo()
     {
@@ -46,7 +47,7 @@ HHUpdateApp从您的服务器下载包含更新信息的JSON文件(HHversions.js
 ```
 
 ###  HHversions.json
-无论使用何种方式，配置服务器上包含更新信息的JSON文件都是必须的。将次配置文件放在应用程序可访问的服务器或远程电脑上。注意：HHversions.json必须是UTF8格式
+无论使用何种方式，配置服务器上包含更新信息的JSON文件都是必须的。将其配置文件放在应用程序可访问的服务器或远程电脑上。注意：HHversions.json必须是UTF8格式
 ```json
 {
   "ApplicationStart": "更新后启动的应用程序名，多个文件用 # 号分割",
