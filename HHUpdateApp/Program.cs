@@ -20,8 +20,13 @@ namespace HHUpdateApp
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            //C# Mutex：（互斥锁）线程同步
             //避免程序重复运行
             System.Threading.Mutex mutex = new System.Threading.Mutex(true, "HHUpdateApp_OnlyRunOneInstance", out bool isRuned);
+            //第一个参数:true--给调用线程赋予互斥体的初始所属权
+            //第一个参数:TQ_WinClient_OnlyRunOneInstance--互斥体的名称
+            //第三个参数:返回值isRuned,如果调用线程已被授予互斥体的初始所属权,则返回true
+
             if (isRuned)
             {
                 try
