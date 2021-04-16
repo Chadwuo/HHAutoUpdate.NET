@@ -9,8 +9,7 @@ HHUpdateApp从您的服务器下载包含更新信息的JSON文件(HHversions.js
 
 ## 如何使用
 拒绝复杂的设置，直接点击【HHUpdateApp.exe】，只需要填写【业务应用程序名称】（例如LOLClient）即可轻松的为您的LOLClient.exe应用程序检查更新。  
-![调用示例](https://github.com/micahh28/HHUpdateApp/blob/master/Images/demo1.png "调用示例")
-
+<img src="Images/demo1.png">
 ## 开发者使用
 ### 1，配置HHUpdateApp.exe.config
 配置升级程序，主要需要配置包含更新信息的JSON文件(HHversions.json)所在路径。
@@ -61,12 +60,12 @@ HHUpdateApp从您的服务器下载包含更新信息的JSON文件(HHversions.js
 ```
 
 ## 示例
-![更新示例](https://github.com/micahh28/HHUpdateApp/blob/master/Images/demo2.png "更新示例")
-![更新示例](https://github.com/micahh28/HHUpdateApp/blob/master/Images/demo3.png "更新示例")
-![更新示例](https://github.com/micahh28/HHUpdateApp/blob/master/Images/demo4.png "更新示例")
-![更新示例](https://github.com/micahh28/HHUpdateApp/blob/master/Images/demo5.png "更新示例")
-![错误消息示例](https://github.com/micahh28/HHUpdateApp/blob/master/Images/demo6.png "错误消息示例")
-![提示消息示例](https://github.com/micahh28/HHUpdateApp/blob/master/Images/demo7.png "提示消息示例")
+<img src="Images/demo2.png">
+<img src="Images/demo3.png">
+<img src="Images/demo4.png">
+<img src="Images/demo5.png">
+<img src="Images/demo6.png">
+<img src="Images/demo7.png">
 
 >上面示例中使用的代码片段
 
