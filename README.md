@@ -23,8 +23,8 @@
 - [开发者使用](#开发者使用)
 - [示例](#示例)
 - [作者](#作者)
-- [更新日志](#更新日志)
 - [版权说明](#版权说明)
+- [相关](#相关)
 - [鸣谢](#鸣谢)
 
 
@@ -164,14 +164,13 @@ private void button1_Click(object sender, EventArgs e)
 
 - [micahh28](https://github.com/micahh28)
 
-
-### 更新日志
-
-[ChangeLog](https://github.com/micahh28/HHAutoUpdate.NET/releases)
-
 ### 版权说明
 
 该项目签署了MIT 授权许可，详情请参阅 [LICENSE.txt](https://github.com/micahh28/HHAutoUpdate.NET/blob/master/LICENSE)
+
+### 相关
+
+[更新日志](https://github.com/micahh28/HHAutoUpdate.NET/releases)
 
 ### 鸣谢
 
