@@ -23,6 +23,7 @@
 - [开发者使用](#开发者使用)
 - [示例](#示例)
 - [作者](#作者)
+- [更新日志](#更新日志)
 - [版权说明](#版权说明)
 - [鸣谢](#鸣谢)
 
@@ -166,7 +167,7 @@ private void button1_Click(object sender, EventArgs e)
 
 ### 更新日志
 
-[ChangeLog](https://github.com/micahh28/hhgiftcash/releases)
+[ChangeLog](https://github.com/micahh28/HHAutoUpdate.NET/releases)
 
 ### 版权说明
 
