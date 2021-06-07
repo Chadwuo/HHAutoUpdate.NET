@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://github.com/micahh28/hhgiftcash">
+  <a>
     <img src="Images/logo.ico" alt="Logo" width="80" height="80">
   </a>
 
