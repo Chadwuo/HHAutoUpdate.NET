@@ -25,7 +25,6 @@
 - [作者](#作者)
 - [版权说明](#版权说明)
 - [相关](#相关)
-- [鸣谢](#鸣谢)
 
 
 ### 上手指南
@@ -162,18 +161,14 @@ private void button1_Click(object sender, EventArgs e)
 
 ### 作者
 
-- [micahh28](https://github.com/micahh28)
+- [chadwuo](https://github.com/chadwuo)
 
 ### 版权说明
 
-该项目签署了MIT 授权许可，详情请参阅 [LICENSE.txt](https://github.com/micahh28/HHAutoUpdate.NET/blob/master/LICENSE)
+该项目签署了MIT 授权许可，详情请参阅 [LICENSE.txt](https://github.com/chadwuo/HHAutoUpdate.NET/blob/master/LICENSE)
 
 ### 相关
 
-[更新日志](https://github.com/micahh28/HHAutoUpdate.NET/releases)
-
-### 鸣谢
-
-- GCTV
+[更新日志](https://github.com/chadwuo/HHAutoUpdate.NET/releases)
 
 
